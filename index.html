@@ -3,137 +3,463 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yei Coffee - Penjualan Sementara</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Yei Coffee - Penjualan & Pengeluaran</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #fffaf0;
+      text-align: center;
+      padding: 10px;
+    }
+
+    h1 {
+      color: #5a381e;
+      margin: 15px 0;
+      font-size: 1.5em;
+    }
+
+    .menu-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #8b5e3c;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.12s;
+      font-size: 14px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    button:hover {
+      background-color: #6d4329;
+      transform: translateY(-2px);
+    }
+
+    table {
+      width: 100%;
+      max-width: 800px;
+      margin: auto;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #ffeaa7;
+      color: #3e2723;
+      font-weight: bold;
+    }
+
+    td[contenteditable="true"] {
+      background-color: #f9f9f9;
+      cursor: text;
+    }
+
+    .totals-row {
+      font-weight: bold;
+      background-color: #fff3cd;
+    }
+
+    #popup {
+      display: none;
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      width: 90%;
+      max-width: 320px;
+    }
+
+    #popup select,
+    #popup input {
+      margin: 8px 0;
+      padding: 8px;
+      width: 90%;
+      font-size: 14px;
+    }
+
+    #popup button {
+      width: 45%;
+      margin: 5px;
+      background-color: #6f4e37;
+      border-radius: 6px;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 5;
+    }
+
+    .rekap-total {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff3e0;
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: left;
+      line-height: 1.8;
+    }
+
+    .rekap-total h3 {
+      margin-bottom: 5px;
+      color: #5a381e;
+    }
+
+    .pengeluaran-form {
+      margin-top: 20px;
+      padding: 10px;
+      background: #ffe0b2;
+      border-radius: 10px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .pengeluaran-form input {
+      padding: 8px;
+      margin: 5px;
+      font-size: 14px;
+      width: 45%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .pengeluaran-table {
+      margin-top: 15px;
+      width: 100%;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+
+    .pengeluaran-table th {
+      background: #ffcc80;
+    }
+
+    @media (max-width: 600px) {
+      table {
+        font-size: 12px;
+      }
+
+      button {
+        flex: 1 1 45%;
+        font-size: 13px;
+        padding: 8px;
+      }
+
+      th,
+      td {
+        padding: 6px;
+      }
+
+      h1 {
+        font-size: 1.3em;
+      }
+
+      .pengeluaran-form input {
+        width: 90%;
+      }
+
+      .rekap-total {
+        font-size: 13px;
+      }
+    }
+  </style>
 </head>
-<body class="bg-amber-50 min-h-screen flex flex-col items-center p-6">
-  <h1 class="text-3xl font-bold text-brown-800 mb-6">☕ Yei Coffee - Penjualan Sementara</h1>
+<body>
+  <h1>Yei Coffee - Penjualan & Pengeluaran</h1>
+  <div class="menu-container" id="menuContainer"></div>
 
-  <div id="menu" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8 w-full max-w-3xl">
-  </div>
-
-  <table class="w-full max-w-4xl border border-gray-400 bg-white rounded-lg shadow-sm text-center">
-    <thead class="bg-amber-200 font-semibold">
-      <tr>
-        <th class="p-2 border">No</th>
-        <th class="p-2 border">Menu</th>
-        <th class="p-2 border">Jumlah Cash</th>
-        <th class="p-2 border">Jumlah QRIS</th>
-      </tr>
-    </thead>
-    <tbody id="rekap-body"></tbody>
-  </table>
-
-  <div id="popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-      <h2 id="popup-title" class="text-xl font-semibold mb-3"></h2>
-      <label class="block mb-2">Jumlah:</label>
-      <input id="jumlah-input" type="number" min="1" class="w-full p-2 border rounded mb-4" placeholder="Masukkan jumlah">
-      <label class="block mb-2">Metode Pembayaran:</label>
-      <select id="metode-input" class="w-full p-2 border rounded mb-4">
-        <option value="Cash">Cash</option>
-        <option value="QRIS">QRIS</option>
-      </select>
-      <div class="flex justify-end gap-2">
-        <button id="cancel-btn" class="px-4 py-2 bg-gray-300 rounded">Batal</button>
-        <button id="submit-btn" class="px-4 py-2 bg-green-500 text-white rounded">Simpan</button>
-      </div>
+  <!-- Popup Tambah Transaksi -->
+  <div id="overlay"></div>
+  <div id="popup">
+    <h3 id="popup-title"></h3>
+    <label>Jumlah:</label><br />
+    <input type="number" id="jumlahInput" min="1" value="1" /><br />
+    <label>Metode Pembayaran:</label><br />
+    <select id="metodeSelect">
+      <option value="Cash">Cash</option>
+      <option value="QRIS">QRIS</option>
+    </select><br />
+    <div>
+      <button onclick="tambahTransaksi()">Tambah</button>
+      <button onclick="tutupPopup()">Batal</button>
     </div>
   </div>
 
+  <!-- Tabel Penjualan -->
+  <table id="rekapTable">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Menu</th>
+        <th>Jumlah Cash</th>
+        <th>Total Cash (Rp)</th>
+        <th>Jumlah QRIS</th>
+        <th>Total QRIS (Rp)</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+      <tr class="totals-row">
+        <td colspan="2">Grand Total</td>
+        <td id="grand-jumlah-cash">0</td>
+        <td id="grand-total-cash">0</td>
+        <td id="grand-jumlah-qris">0</td>
+        <td id="grand-total-qris">0</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- Form Tambah Pengeluaran -->
+  <div class="pengeluaran-form">
+    <h3>Catat Pengeluaran</h3>
+    <input type="text" id="namaPengeluaran" placeholder="Nama Pengeluaran" />
+    <input type="number" id="jumlahPengeluaran" placeholder="Jumlah (Rp)" />
+    <button onclick="tambahPengeluaran()">Tambah</button>
+  </div>
+
+  <!-- Tabel Pengeluaran -->
+  <table class="pengeluaran-table" id="tabelPengeluaran">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama Pengeluaran</th>
+        <th>Jumlah (Rp)</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- Rekap Total -->
+  <div class="rekap-total" id="rekapTotal">
+    <h3>Rekap Total Keseluruhan</h3>
+    <p>Total Cash: <b id="totalCashRp">Rp 0</b></p>
+    <p>Total QRIS: <b id="totalQrisRp">Rp 0</b></p>
+    <p>Total Pengeluaran: <b id="totalKeluarRp">Rp 0</b></p>
+    <hr />
+    <p>Total Bersih: <b id="totalBersihRp" style="color: green">Rp 0</b></p>
+  </div>
+
   <script>
-    const menuList = [
-      "Cafe Latte", "Gula Aren", "Popcorn Latte", "Matcha", "Choco Hazel",
-      "Americano", "Blush Berry", "Pink Potion", "Thai Tea", "Spanish Latte", "Butterscotch Latte"
-    ];
+    const menuList = {
+      "Yei Coffee": 13000,
+      "Cafe Latte": 8000,
+      "Gula Aren": 10000,
+      "Popcorn Latte": 12000,
+      "Matcha": 13000,
+      "Choco Hazel": 13000,
+      "Americano": 8000,
+      "Blush Berry": 13000,
+      "Pink Potion": 13000,
+      "Thai Tea": 13000,
+      "Spanish Latte": 12000,
+      "Butterscotch Latte": 15000,
+    };
 
-    const menuContainer = document.getElementById("menu");
-    const popup = document.getElementById("popup");
-    const popupTitle = document.getElementById("popup-title");
-    const jumlahInput = document.getElementById("jumlah-input");
-    const metodeInput = document.getElementById("metode-input");
-    const cancelBtn = document.getElementById("cancel-btn");
-    const submitBtn = document.getElementById("submit-btn");
-    const rekapBody = document.getElementById("rekap-body");
+    const dataRekap = [];
+    const pengeluaran = [];
+    let menuDipilih = "";
 
-    let selectedMenu = "";
-    let transaksi = [];
+    const menuContainer = document.getElementById("menuContainer");
+    const rekapTableBody = document.querySelector("#rekapTable tbody");
+    const tabelPengeluaran = document.querySelector("#tabelPengeluaran tbody");
 
-    // Buat tombol menu
-    menuList.forEach(menu => {
+    Object.keys(menuList).forEach((menu) => {
       const btn = document.createElement("button");
-      btn.textContent = menu;
-      btn.className = "p-3 bg-amber-400 hover:bg-amber-500 text-white font-semibold rounded-lg shadow";
-      btn.onclick = () => openPopup(menu);
+      btn.textContent = `${menu}`;
+      btn.onclick = () => bukaPopup(menu);
       menuContainer.appendChild(btn);
     });
 
-    function openPopup(menu) {
-      selectedMenu = menu;
-      popupTitle.textContent = `Tambah Penjualan: ${menu}`;
-      jumlahInput.value = "";
-      metodeInput.value = "Cash";
-      popup.classList.remove("hidden");
+    function bukaPopup(menu) {
+      menuDipilih = menu;
+      document.getElementById("popup-title").innerText = `${menu} - Rp ${menuList[
+        menu
+      ].toLocaleString("id-ID")}`;
+      document.getElementById("jumlahInput").value = 1;
+      document.getElementById("overlay").style.display = "block";
+      document.getElementById("popup").style.display = "block";
     }
 
-    function closePopup() {
-      popup.classList.add("hidden");
+    function tutupPopup() {
+      document.getElementById("popup").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
     }
 
-    function tambahRekap(menu, jumlah, metode) {
-      let existing = transaksi.find(t => t.menu === menu);
+    function tambahTransaksi() {
+      const jumlah = parseInt(document.getElementById("jumlahInput").value);
+      const metode = document.getElementById("metodeSelect").value;
+      if (!jumlah || jumlah <= 0) return;
+      let existing = dataRekap.find((r) => r.menu === menuDipilih);
       if (!existing) {
-        existing = { menu, cash: 0, qris: 0 };
-        transaksi.push(existing);
+        existing = {
+          menu: menuDipilih,
+          jumlahCash: 0,
+          totalCash: 0,
+          jumlahQris: 0,
+          totalQris: 0,
+        };
+        dataRekap.push(existing);
       }
       if (metode === "Cash") {
-        existing.cash += jumlah;
+        existing.jumlahCash += jumlah;
+        existing.totalCash = existing.jumlahCash * menuList[menuDipilih];
       } else {
-        existing.qris += jumlah;
+        existing.jumlahQris += jumlah;
+        existing.totalQris = existing.jumlahQris * menuList[menuDipilih];
       }
-      updateTable();
+      renderTable();
+      updateTotals();
+      tutupPopup();
     }
 
-    function updateTable() {
-      rekapBody.innerHTML = "";
-      transaksi.forEach((t, i) => {
+    function renderTable() {
+      rekapTableBody.innerHTML = "";
+      dataRekap.forEach((r, i) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td class="border p-2">${i + 1}</td>
-          <td class="border p-2 font-semibold">${t.menu}</td>
-          <td class="border p-2 editable text-blue-700 cursor-pointer" data-type="cash" data-index="${i}">${t.cash}</td>
-          <td class="border p-2 editable text-green-700 cursor-pointer" data-type="qris" data-index="${i}">${t.qris}</td>
+          <td>${i + 1}</td>
+          <td style="text-align:left;padding-left:8px">${r.menu}</td>
+          <td contenteditable="true" data-index="${i}" data-type="cash">${r.jumlahCash}</td>
+          <td>${r.totalCash.toLocaleString("id-ID")}</td>
+          <td contenteditable="true" data-index="${i}" data-type="qris">${r.jumlahQris}</td>
+          <td>${r.totalQris.toLocaleString("id-ID")}</td>
         `;
-        rekapBody.appendChild(row);
+        rekapTableBody.appendChild(row);
       });
 
-      // Klik untuk edit
-      document.querySelectorAll(".editable").forEach(cell => {
-        cell.addEventListener("click", function() {
-          const i = this.dataset.index;
-          const tipe = this.dataset.type;
-          const currentValue = this.textContent.trim();
-          const newValue = prompt(`Ubah jumlah ${tipe.toUpperCase()} untuk ${transaksi[i].menu}:`, currentValue);
-          if (newValue !== null && !isNaN(newValue) && newValue >= 0) {
-            transaksi[i][tipe] = parseInt(newValue);
-            updateTable();
+      document.querySelectorAll('td[contenteditable="true"]').forEach((cell) => {
+        cell.addEventListener("blur", onEdit);
+        cell.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            cell.blur();
           }
         });
       });
     }
 
-    cancelBtn.onclick = closePopup;
-
-    submitBtn.onclick = () => {
-      const jumlah = parseInt(jumlahInput.value);
-      const metode = metodeInput.value;
-      if (!jumlah || jumlah <= 0) {
-        alert("Masukkan jumlah yang valid!");
-        return;
+    function onEdit(e) {
+      const cell = e.target;
+      const idx = parseInt(cell.dataset.index);
+      const tipe = cell.dataset.type;
+      const val = parseInt(cell.textContent);
+      if (isNaN(val) || val < 0) return;
+      if (tipe === "cash") {
+        dataRekap[idx].jumlahCash = val;
+        dataRekap[idx].totalCash = val * menuList[dataRekap[idx].menu];
+      } else {
+        dataRekap[idx].jumlahQris = val;
+        dataRekap[idx].totalQris = val * menuList[dataRekap[idx].menu];
       }
-      tambahRekap(selectedMenu, jumlah, metode);
-      closePopup();
-    };
+      renderTable();
+      updateTotals();
+    }
+
+    function tambahPengeluaran() {
+      const nama = document.getElementById("namaPengeluaran").value.trim();
+      const jumlah = parseInt(document.getElementById("jumlahPengeluaran").value);
+      if (!nama || !jumlah || jumlah <= 0)
+        return alert("Lengkapi data pengeluaran!");
+      pengeluaran.push({ nama, jumlah });
+      document.getElementById("namaPengeluaran").value = "";
+      document.getElementById("jumlahPengeluaran").value = "";
+      renderPengeluaran();
+      updateTotals();
+    }
+
+    function renderPengeluaran() {
+      tabelPengeluaran.innerHTML = "";
+      pengeluaran.forEach((p, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${i + 1}</td>
+          <td contenteditable="true" data-index="${i}" data-field="nama">${p.nama}</td>
+          <td contenteditable="true" data-index="${i}" data-field="jumlah">${p.jumlah}</td>
+          <td><button onclick="hapusPengeluaran(${i})">❌</button></td>
+        `;
+        tabelPengeluaran.appendChild(row);
+      });
+
+      document.querySelectorAll('#tabelPengeluaran td[contenteditable="true"]').forEach((cell) => {
+        cell.addEventListener("blur", (e) => {
+          const i = parseInt(cell.dataset.index);
+          const field = cell.dataset.field;
+          if (field === "jumlah") {
+            const val = parseInt(cell.textContent);
+            if (!isNaN(val) && val >= 0) pengeluaran[i].jumlah = val;
+          } else {
+            pengeluaran[i].nama = cell.textContent.trim();
+          }
+          updateTotals();
+        });
+      });
+    }
+
+    function hapusPengeluaran(index) {
+      pengeluaran.splice(index, 1);
+      renderPengeluaran();
+      updateTotals();
+    }
+
+    function updateTotals() {
+      let jCash = 0,
+        tCash = 0,
+        jQris = 0,
+        tQris = 0;
+      dataRekap.forEach((r) => {
+        jCash += r.jumlahCash;
+        tCash += r.totalCash;
+        jQris += r.jumlahQris;
+        tQris += r.totalQris;
+      });
+      document.getElementById("grand-jumlah-cash").textContent = jCash;
+      document.getElementById("grand-total-cash").textContent = tCash.toLocaleString("id-ID");
+      document.getElementById("grand-jumlah-qris").textContent = jQris;
+      document.getElementById("grand-total-qris").textContent = tQris.toLocaleString("id-ID");
+
+      const totalKeluar = pengeluaran.reduce((a, b) => a + b.jumlah, 0);
+      const totalBersih = tCash + tQris - totalKeluar;
+
+      document.getElementById("totalCashRp").textContent = `Rp ${tCash.toLocaleString("id-ID")}`;
+      document.getElementById("totalQrisRp").textContent = `Rp ${tQris.toLocaleString("id-ID")}`;
+      document.getElementById("totalKeluarRp").textContent = `Rp ${totalKeluar.toLocaleString("id-ID")}`;
+      document.getElementById("totalBersihRp").textContent = `Rp ${totalBersih.toLocaleString("id-ID")}`;
+    }
   </script>
 </body>
 </html>
