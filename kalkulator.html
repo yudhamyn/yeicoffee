@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator Pembelian - Yei Coffee</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #fff8ef;
+      color: #4a2c18;
+      text-align: center;
+      margin: 0;
+      padding: 10px;
+    }
+    h1 {
+      margin-top: 10px;
+      font-size: 1.5em;
+      color: #4a2c18;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .menu-btn {
+      background: #8b5e3c;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+    .menu-btn:hover {
+      background: #6f4225;
+      transform: scale(1.03);
+    }
+    table {
+      width: 100%;
+      max-width: 600px;
+      margin: 10px auto;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+    th {
+      background: #ffeaa7;
+    }
+    .total-box {
+      margin-top: 15px;
+      background: #fff3cd;
+      padding: 15px;
+      border-radius: 10px;
+      display: inline-block;
+      min-width: 280px;
+      font-weight: 600;
+    }
+    input[type="number"], .input-money {
+      padding: 10px;
+      width: 80%;
+      max-width: 250px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      text-align: center;
+      font-size: 1em;
+    }
+    .btn {
+      background: #8b5e3c;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 8px;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+    .btn:hover {
+      background: #6f4225;
+    }
+    /* Popup keypad */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .popup-content {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 90%;
+      max-width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .key {
+      background: #8b5e3c;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .key:hover {
+      background: #6f4225;
+    }
+    #jumlahInput {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 8px;
+      width: 80%;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.3em; }
+      .menu-btn { font-size: 0.9em; padding: 12px; }
+      .btn { font-size: 0.8em; padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Kalkulator Pembelian - Yei Coffee</h1>
+
+  <div class="menu-grid" id="menuButtons"></div>
+
+  <table id="pembelianTable">
+    <thead>
+      <tr><th>No</th><th>Menu</th><th>Harga</th><th>Jumlah</th><th>Subtotal</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="total-box">
+    <p><b>Total Belanja:</b> <span id="totalBelanja">Rp 0</span></p>
+    <p>
+      <label>Uang Diterima:</label><br/>
+      <input type="number" class="input-money" id="uangDiterima" placeholder="Masukkan jumlah uang..." oninput="hitungKembalian()" />
+    </p>
+    <p><b>Kembalian:</b> <span id="kembalian">Rp 0</span></p>
+  </div>
+
+  <div>
+    <button class="btn" onclick="resetKalkulator()">🔄 Reset</button>
+    <button class="btn" onclick="window.location.href='index.html'">📊 Kembali ke Rekap</button>
+  </div>
+
+  <!-- Popup keypad -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h3 id="popupTitle">Masukkan Jumlah</h3>
+      <input type="text" id="jumlahInput" value="0" readonly />
+      <div class="keypad">
+        <button class="key" onclick="addDigit(1)">1</button>
+        <button class="key" onclick="addDigit(2)">2</button>
+        <button class="key" onclick="addDigit(3)">3</button>
+        <button class="key" onclick="addDigit(4)">4</button>
+        <button class="key" onclick="addDigit(5)">5</button>
+        <button class="key" onclick="addDigit(6)">6</button>
+        <button class="key" onclick="addDigit(7)">7</button>
+        <button class="key" onclick="addDigit(8)">8</button>
+        <button class="key" onclick="addDigit(9)">9</button>
+        <button class="key" onclick="clearInput()">⌫</button>
+        <button class="key" onclick="addDigit(0)">0</button>
+        <button class="key" onclick="okInput()">✔</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuList = {
+      "Yei Coffee": 13000, "Cafe Latte": 8000, "Gula Aren": 10000,
+      "Popcorn Latte": 12000, "Matcha": 13000, "Choco Hazel": 13000,
+      "Americano": 8000, "Blush Berry": 13000, "Pink Potion": 13000,
+      "Thai Tea": 13000, "Spanish Latte": 12000, "Butterscotch Latte": 15000,
+      "Espresso": 3000,
+    };
+    const pembelian = [];
+    const menuButtons = document.getElementById("menuButtons");
+    const tbody = document.querySelector("#pembelianTable tbody");
+    const popup = document.getElementById("popup");
+    const jumlahInput = document.getElementById("jumlahInput");
+    let selectedMenu = null;
+
+    Object.keys(menuList).forEach(menu => {
+      const btn = document.createElement("button");
+      btn.className = "menu-btn";
+      btn.textContent = menu;
+      btn.onclick = () => bukaPopup(menu);
+      menuButtons.appendChild(btn);
+    });
+
+    function bukaPopup(menu) {
+      selectedMenu = menu;
+      document.getElementById("popupTitle").textContent = menu;
+      jumlahInput.value = "0";
+      popup.style.display = "flex";
+    }
+
+    function addDigit(num) {
+      if (jumlahInput.value === "0") jumlahInput.value = num.toString();
+      else jumlahInput.value += num;
+    }
+
+    function clearInput() {
+      jumlahInput.value = jumlahInput.value.slice(0, -1) || "0";
+    }
+
+    function okInput() {
+      const qty = parseInt(jumlahInput.value) || 0;
+      if (qty > 0) tambahPembelian(selectedMenu, qty);
+      popup.style.display = "none";
+    }
+
+    function tambahPembelian(menu, qty) {
+      const existing = pembelian.find(p => p.menu === menu);
+      if (existing) existing.jumlah += qty;
+      else pembelian.push({ menu, jumlah: qty });
+      updateTabel();
+    }
+
+    function updateTabel() {
+      tbody.innerHTML = "";
+      let total = 0;
+      pembelian.forEach((p, i) => {
+        const harga = menuList[p.menu];
+        const subtotal = harga * p.jumlah;
+        total += subtotal;
+        tbody.innerHTML += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${p.menu}</td>
+            <td>Rp ${harga.toLocaleString("id-ID")}</td>
+            <td>${p.jumlah}</td>
+            <td>Rp ${subtotal.toLocaleString("id-ID")}</td>
+          </tr>
+        `;
+      });
+      document.getElementById("totalBelanja").textContent = "Rp " + total.toLocaleString("id-ID");
+      hitungKembalian();
+    }
+
+    function hitungKembalian() {
+      const total = parseInt(document.getElementById("totalBelanja").textContent.replace(/\D/g, "")) || 0;
+      const bayar = parseInt(document.getElementById("uangDiterima").value) || 0;
+      const kembali = bayar - total;
+      document.getElementById("kembalian").textContent = "Rp " + (kembali >= 0 ? kembali.toLocaleString("id-ID") : "0");
+    }
+
+    function resetKalkulator() {
+      pembelian.length = 0;
+      document.getElementById("uangDiterima").value = "";
+      updateTabel();
+    }
+
+    popup.addEventListener("click", (e) => {
+      if (e.target === popup) popup.style.display = "none";
+    });
+  </script>
+</body>
+</html>
