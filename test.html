@@ -35,7 +35,6 @@
       cursor: pointer;
       transition: 0.12s;
       font-size: 14px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
     }
 
     button:hover {
@@ -53,8 +52,7 @@
       font-size: 14px;
     }
 
-    th,
-    td {
+    th, td {
       border: 1px solid #ddd;
       padding: 8px;
       text-align: center;
@@ -63,7 +61,6 @@
     th {
       background-color: #ffeaa7;
       color: #3e2723;
-      font-weight: bold;
     }
 
     td[contenteditable="true"] {
@@ -76,27 +73,35 @@
       background-color: #fff3cd;
     }
 
-    #popup {
+    #popup, #overlay {
       display: none;
       position: fixed;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    #popup {
       background: white;
       padding: 15px;
       border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-      z-index: 10;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
       width: 90%;
       max-width: 320px;
     }
 
-    #popup select,
-    #popup input {
+    #overlay {
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 5;
+    }
+
+    #popup select, #popup input {
       margin: 8px 0;
       padding: 8px;
       width: 90%;
-      font-size: 14px;
     }
 
     #popup button {
@@ -104,17 +109,7 @@
       margin: 5px;
       background-color: #6f4e37;
       border-radius: 6px;
-    }
-
-    #overlay {
-      display: none;
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: 5;
+      color: white;
     }
 
     .rekap-total {
@@ -123,14 +118,9 @@
       background: #fff3e0;
       padding: 12px;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       text-align: left;
       line-height: 1.8;
-    }
-
-    .rekap-total h3 {
-      margin-bottom: 5px;
-      color: #5a381e;
     }
 
     .pengeluaran-form {
@@ -172,26 +162,14 @@
       table {
         font-size: 12px;
       }
-
       button {
         flex: 1 1 45%;
         font-size: 13px;
         padding: 8px;
       }
-
-      th,
-      td {
-        padding: 6px;
-      }
-
-      h1 {
-        font-size: 1.3em;
-      }
-
       .pengeluaran-form input {
         width: 90%;
       }
-
       .rekap-total {
         font-size: 13px;
       }
@@ -202,7 +180,7 @@
   <h1>Yei Coffee - Penjualan & Pengeluaran</h1>
   <div class="menu-container" id="menuContainer"></div>
 
-  <!-- Popup Tambah Transaksi -->
+  <!-- Popup -->
   <div id="overlay"></div>
   <div id="popup">
     <h3 id="popup-title"></h3>
@@ -223,27 +201,28 @@
   <table id="rekapTable">
     <thead>
       <tr>
-        <th>No</th>
-        <th>Menu</th>
-        <th>Jumlah Cash</th>
-        <th>Total Cash (Rp)</th>
-        <th>Jumlah QRIS</th>
-        <th>Total QRIS (Rp)</th>
+        <th>No</th><th>Menu</th><th>Jumlah Cash</th><th>Total Cash</th>
+        <th>Jumlah QRIS</th><th>Total QRIS</th>
       </tr>
     </thead>
     <tbody></tbody>
     <tfoot>
       <tr class="totals-row">
         <td colspan="2">Grand Total</td>
-        <td id="grand-jumlah-cash">0</td>
-        <td id="grand-total-cash">0</td>
-        <td id="grand-jumlah-qris">0</td>
-        <td id="grand-total-qris">0</td>
+        <td id="grand-jumlah-cash">0</td><td id="grand-total-cash">0</td>
+        <td id="grand-jumlah-qris">0</td><td id="grand-total-qris">0</td>
       </tr>
     </tfoot>
   </table>
 
-  <!-- Form Tambah Pengeluaran -->
+  <!-- Input Modal -->
+  <div class="pengeluaran-form">
+    <h3>Modal Awal</h3>
+    <input type="number" id="uangModal" placeholder="Masukkan uang modal (Rp)" />
+    <button onclick="simpanModal()">Simpan Modal</button>
+  </div>
+
+  <!-- Pengeluaran -->
   <div class="pengeluaran-form">
     <h3>Catat Pengeluaran</h3>
     <input type="text" id="namaPengeluaran" placeholder="Nama Pengeluaran" />
@@ -251,49 +230,36 @@
     <button onclick="tambahPengeluaran()">Tambah</button>
   </div>
 
-  <!-- Tabel Pengeluaran -->
   <table class="pengeluaran-table" id="tabelPengeluaran">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Nama Pengeluaran</th>
-        <th>Jumlah (Rp)</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
+    <thead><tr><th>No</th><th>Nama</th><th>Jumlah (Rp)</th><th>Aksi</th></tr></thead>
     <tbody></tbody>
   </table>
 
-  <!-- Rekap Total -->
+  <!-- Rekap -->
   <div class="rekap-total" id="rekapTotal">
     <h3>Rekap Total Keseluruhan</h3>
+    <p>Modal Awal: <b id="modalAwalRp">Rp 0</b></p>
     <p>Total Cash: <b id="totalCashRp">Rp 0</b></p>
     <p>Total QRIS: <b id="totalQrisRp">Rp 0</b></p>
     <p>Total Pengeluaran: <b id="totalKeluarRp">Rp 0</b></p>
     <hr />
-    <p>Total Bersih: <b id="totalBersihRp" style="color: green">Rp 0</b></p>
+    <p><b>Total Bersih: <span id="totalBersihRp" style="color:green">Rp 0</span></b></p>
+    <hr />
+    <button style="background:#b71c1c" onclick="resetSemua()">🔄 Reset Semua Data</button>
   </div>
 
   <script>
     const menuList = {
-      "Yei Coffee": 13000,
-      "Cafe Latte": 8000,
-      "Gula Aren": 10000,
-      "Popcorn Latte": 12000,
-      "Matcha": 13000,
-      "Choco Hazel": 13000,
-      "Americano": 8000,
-      "Blush Berry": 13000,
-      "Pink Potion": 13000,
-      "Thai Tea": 13000,
-      "Spanish Latte": 12000,
-      "Butterscotch Latte": 15000,
-      "Espressoe": 3000,
+      "Yei Coffee": 13000, "Cafe Latte": 8000, "Gula Aren": 10000,
+      "Popcorn Latte": 12000, "Matcha": 13000, "Choco Hazel": 13000,
+      "Americano": 8000, "Blush Berry": 13000, "Pink Potion": 13000,
+      "Thai Tea": 13000, "Spanish Latte": 12000, "Butterscotch Latte": 15000,
+      "Espresso": 3000,
     };
 
-    const dataRekap = [];
-    const pengeluaran = [];
-    let menuDipilih = "";
+    let dataRekap = JSON.parse(localStorage.getItem("dataRekap") || "[]");
+    let pengeluaran = JSON.parse(localStorage.getItem("pengeluaran") || "[]");
+    let uangModal = parseInt(localStorage.getItem("uangModal") || "0");
 
     const menuContainer = document.getElementById("menuContainer");
     const rekapTableBody = document.querySelector("#rekapTable tbody");
@@ -301,19 +267,23 @@
 
     Object.keys(menuList).forEach((menu) => {
       const btn = document.createElement("button");
-      btn.textContent = `${menu}`;
+      btn.textContent = menu;
       btn.onclick = () => bukaPopup(menu);
       menuContainer.appendChild(btn);
     });
 
+    function simpanLocal() {
+      localStorage.setItem("dataRekap", JSON.stringify(dataRekap));
+      localStorage.setItem("pengeluaran", JSON.stringify(pengeluaran));
+      localStorage.setItem("uangModal", uangModal);
+    }
+
     function bukaPopup(menu) {
-      menuDipilih = menu;
-      document.getElementById("popup-title").innerText = `${menu} - Rp ${menuList[
-        menu
-      ].toLocaleString("id-ID")}`;
+      document.getElementById("popup-title").innerText = menu;
       document.getElementById("jumlahInput").value = 1;
       document.getElementById("overlay").style.display = "block";
       document.getElementById("popup").style.display = "block";
+      window.menuDipilih = menu;
     }
 
     function tutupPopup() {
@@ -324,16 +294,10 @@
     function tambahTransaksi() {
       const jumlah = parseInt(document.getElementById("jumlahInput").value);
       const metode = document.getElementById("metodeSelect").value;
-      if (!jumlah || jumlah <= 0) return;
-      let existing = dataRekap.find((r) => r.menu === menuDipilih);
+      if (!jumlah) return;
+      let existing = dataRekap.find(r => r.menu === menuDipilih);
       if (!existing) {
-        existing = {
-          menu: menuDipilih,
-          jumlahCash: 0,
-          totalCash: 0,
-          jumlahQris: 0,
-          totalQris: 0,
-        };
+        existing = { menu: menuDipilih, jumlahCash:0, totalCash:0, jumlahQris:0, totalQris:0 };
         dataRekap.push(existing);
       }
       if (metode === "Cash") {
@@ -343,124 +307,99 @@
         existing.jumlahQris += jumlah;
         existing.totalQris = existing.jumlahQris * menuList[menuDipilih];
       }
-      renderTable();
-      updateTotals();
-      tutupPopup();
+      renderTable(); updateTotals(); simpanLocal(); tutupPopup();
     }
 
     function renderTable() {
       rekapTableBody.innerHTML = "";
       dataRekap.forEach((r, i) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${i + 1}</td>
-          <td style="text-align:left;padding-left:8px">${r.menu}</td>
-          <td contenteditable="true" data-index="${i}" data-type="cash">${r.jumlahCash}</td>
+        const row = `<tr>
+          <td>${i+1}</td><td>${r.menu}</td>
+          <td contenteditable="true" data-i="${i}" data-t="cash">${r.jumlahCash}</td>
           <td>${r.totalCash.toLocaleString("id-ID")}</td>
-          <td contenteditable="true" data-index="${i}" data-type="qris">${r.jumlahQris}</td>
+          <td contenteditable="true" data-i="${i}" data-t="qris">${r.jumlahQris}</td>
           <td>${r.totalQris.toLocaleString("id-ID")}</td>
-        `;
-        rekapTableBody.appendChild(row);
+        </tr>`;
+        rekapTableBody.insertAdjacentHTML("beforeend", row);
       });
-
-      document.querySelectorAll('td[contenteditable="true"]').forEach((cell) => {
-        cell.addEventListener("blur", onEdit);
-        cell.addEventListener("keydown", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            cell.blur();
-          }
-        });
+      document.querySelectorAll('td[contenteditable="true"]').forEach(cell=>{
+        cell.onblur=e=>{
+          const i=e.target.dataset.i, t=e.target.dataset.t, v=parseInt(e.target.textContent)||0;
+          if(t==="cash"){dataRekap[i].jumlahCash=v;dataRekap[i].totalCash=v*menuList[dataRekap[i].menu];}
+          else{dataRekap[i].jumlahQris=v;dataRekap[i].totalQris=v*menuList[dataRekap[i].menu];}
+          renderTable();updateTotals();simpanLocal();
+        };
       });
-    }
-
-    function onEdit(e) {
-      const cell = e.target;
-      const idx = parseInt(cell.dataset.index);
-      const tipe = cell.dataset.type;
-      const val = parseInt(cell.textContent);
-      if (isNaN(val) || val < 0) return;
-      if (tipe === "cash") {
-        dataRekap[idx].jumlahCash = val;
-        dataRekap[idx].totalCash = val * menuList[dataRekap[idx].menu];
-      } else {
-        dataRekap[idx].jumlahQris = val;
-        dataRekap[idx].totalQris = val * menuList[dataRekap[idx].menu];
-      }
-      renderTable();
-      updateTotals();
     }
 
     function tambahPengeluaran() {
-      const nama = document.getElementById("namaPengeluaran").value.trim();
-      const jumlah = parseInt(document.getElementById("jumlahPengeluaran").value);
-      if (!nama || !jumlah || jumlah <= 0)
-        return alert("Lengkapi data pengeluaran!");
-      pengeluaran.push({ nama, jumlah });
-      document.getElementById("namaPengeluaran").value = "";
-      document.getElementById("jumlahPengeluaran").value = "";
-      renderPengeluaran();
-      updateTotals();
+      const nama=document.getElementById("namaPengeluaran").value.trim();
+      const jumlah=parseInt(document.getElementById("jumlahPengeluaran").value);
+      if(!nama||!jumlah)return;
+      pengeluaran.push({nama,jumlah});
+      document.getElementById("namaPengeluaran").value="";
+      document.getElementById("jumlahPengeluaran").value="";
+      renderPengeluaran();updateTotals();simpanLocal();
     }
 
     function renderPengeluaran() {
-      tabelPengeluaran.innerHTML = "";
-      pengeluaran.forEach((p, i) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${i + 1}</td>
-          <td contenteditable="true" data-index="${i}" data-field="nama">${p.nama}</td>
-          <td contenteditable="true" data-index="${i}" data-field="jumlah">${p.jumlah}</td>
-          <td><button onclick="hapusPengeluaran(${i})">❌</button></td>
-        `;
-        tabelPengeluaran.appendChild(row);
+      tabelPengeluaran.innerHTML="";
+      pengeluaran.forEach((p,i)=>{
+        tabelPengeluaran.insertAdjacentHTML("beforeend",
+          `<tr><td>${i+1}</td>
+          <td contenteditable="true" data-i="${i}" data-f="nama">${p.nama}</td>
+          <td contenteditable="true" data-i="${i}" data-f="jumlah">${p.jumlah}</td>
+          <td><button onclick="hapusPengeluaran(${i})">❌</button></td></tr>`);
       });
-
-      document.querySelectorAll('#tabelPengeluaran td[contenteditable="true"]').forEach((cell) => {
-        cell.addEventListener("blur", (e) => {
-          const i = parseInt(cell.dataset.index);
-          const field = cell.dataset.field;
-          if (field === "jumlah") {
-            const val = parseInt(cell.textContent);
-            if (!isNaN(val) && val >= 0) pengeluaran[i].jumlah = val;
-          } else {
-            pengeluaran[i].nama = cell.textContent.trim();
-          }
-          updateTotals();
-        });
+      document.querySelectorAll('#tabelPengeluaran td[contenteditable="true"]').forEach(c=>{
+        c.onblur=e=>{
+          const i=c.dataset.i,f=c.dataset.f;
+          if(f==="jumlah"){pengeluaran[i].jumlah=parseInt(c.textContent)||0;}
+          else pengeluaran[i].nama=c.textContent.trim();
+          updateTotals();simpanLocal();
+        };
       });
     }
 
-    function hapusPengeluaran(index) {
-      pengeluaran.splice(index, 1);
-      renderPengeluaran();
-      updateTotals();
+    function hapusPengeluaran(i){pengeluaran.splice(i,1);renderPengeluaran();updateTotals();simpanLocal();}
+
+    function simpanModal(){
+      uangModal=parseInt(document.getElementById("uangModal").value)||0;
+      simpanLocal();updateTotals();
     }
 
     function updateTotals() {
-      let jCash = 0,
-        tCash = 0,
-        jQris = 0,
-        tQris = 0;
-      dataRekap.forEach((r) => {
-        jCash += r.jumlahCash;
-        tCash += r.totalCash;
-        jQris += r.jumlahQris;
-        tQris += r.totalQris;
-      });
-      document.getElementById("grand-jumlah-cash").textContent = jCash;
-      document.getElementById("grand-total-cash").textContent = tCash.toLocaleString("id-ID");
-      document.getElementById("grand-jumlah-qris").textContent = jQris;
-      document.getElementById("grand-total-qris").textContent = tQris.toLocaleString("id-ID");
+      let jC=0,tC=0,jQ=0,tQ=0;
+      dataRekap.forEach(r=>{jC+=r.jumlahCash;tC+=r.totalCash;jQ+=r.jumlahQris;tQ+=r.totalQris;});
+      document.getElementById("grand-jumlah-cash").textContent=jC;
+      document.getElementById("grand-total-cash").textContent=tC.toLocaleString("id-ID");
+      document.getElementById("grand-jumlah-qris").textContent=jQ;
+      document.getElementById("grand-total-qris").textContent=tQ.toLocaleString("id-ID");
 
-      const totalKeluar = pengeluaran.reduce((a, b) => a + b.jumlah, 0);
-      const totalBersih = tCash + tQris - totalKeluar;
+      const totalKeluar=pengeluaran.reduce((a,b)=>a+b.jumlah,0);
+      const totalBersih=tC+tQ-totalKeluar+uangModal;
 
-      document.getElementById("totalCashRp").textContent = `Rp ${tCash.toLocaleString("id-ID")}`;
-      document.getElementById("totalQrisRp").textContent = `Rp ${tQris.toLocaleString("id-ID")}`;
-      document.getElementById("totalKeluarRp").textContent = `Rp ${totalKeluar.toLocaleString("id-ID")}`;
-      document.getElementById("totalBersihRp").textContent = `Rp ${totalBersih.toLocaleString("id-ID")}`;
+      document.getElementById("modalAwalRp").textContent=`Rp ${uangModal.toLocaleString("id-ID")}`;
+      document.getElementById("totalCashRp").textContent=`Rp ${tC.toLocaleString("id-ID")}`;
+      document.getElementById("totalQrisRp").textContent=`Rp ${tQ.toLocaleString("id-ID")}`;
+      document.getElementById("totalKeluarRp").textContent=`Rp ${totalKeluar.toLocaleString("id-ID")}`;
+      document.getElementById("totalBersihRp").textContent=`Rp ${totalBersih.toLocaleString("id-ID")}`;
     }
+
+    function resetSemua() {
+      if (confirm("Yakin ingin mereset semua data?")) {
+        localStorage.clear();
+        dataRekap = [];
+        pengeluaran = [];
+        uangModal = 0;
+        renderTable(); renderPengeluaran(); updateTotals();
+        document.getElementById("uangModal").value = "";
+      }
+    }
+
+    // Muat ulang data
+    renderTable(); renderPengeluaran(); updateTotals();
+    document.getElementById("uangModal").value = uangModal;
   </script>
 </body>
 </html>

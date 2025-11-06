@@ -244,6 +244,8 @@
     <p>Total Pengeluaran: <b id="totalKeluarRp">Rp 0</b></p>
     <hr />
     <p><b>Total Bersih: <span id="totalBersihRp" style="color:green">Rp 0</span></b></p>
+    <hr />
+    <button style="background:#b71c1c" onclick="resetSemua()">🔄 Reset Semua Data</button>
   </div>
 
   <script>
@@ -382,6 +384,17 @@
       document.getElementById("totalQrisRp").textContent=`Rp ${tQ.toLocaleString("id-ID")}`;
       document.getElementById("totalKeluarRp").textContent=`Rp ${totalKeluar.toLocaleString("id-ID")}`;
       document.getElementById("totalBersihRp").textContent=`Rp ${totalBersih.toLocaleString("id-ID")}`;
+    }
+
+    function resetSemua() {
+      if (confirm("Yakin ingin mereset semua data?")) {
+        localStorage.clear();
+        dataRekap = [];
+        pengeluaran = [];
+        uangModal = 0;
+        renderTable(); renderPengeluaran(); updateTotals();
+        document.getElementById("uangModal").value = "";
+      }
     }
 
     // Muat ulang data
