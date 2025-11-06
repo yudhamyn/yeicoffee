@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yei Coffee - Penjualan Sementara</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-amber-50 min-h-screen flex flex-col items-center p-6">
+  <h1 class="text-3xl font-bold text-brown-800 mb-6">☕ Yei Coffee - Penjualan Sementara</h1>
+
+  <div id="menu" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8 w-full max-w-3xl">
+  </div>
+
+  <table class="w-full max-w-4xl border border-gray-400 bg-white rounded-lg shadow-sm text-center">
+    <thead class="bg-amber-200 font-semibold">
+      <tr>
+        <th class="p-2 border">No</th>
+        <th class="p-2 border">Menu</th>
+        <th class="p-2 border">Jumlah Cash</th>
+        <th class="p-2 border">Jumlah QRIS</th>
+      </tr>
+    </thead>
+    <tbody id="rekap-body"></tbody>
+  </table>
+
+  <div id="popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-80">
+      <h2 id="popup-title" class="text-xl font-semibold mb-3"></h2>
+      <label class="block mb-2">Jumlah:</label>
+      <input id="jumlah-input" type="number" min="1" class="w-full p-2 border rounded mb-4" placeholder="Masukkan jumlah">
+      <label class="block mb-2">Metode Pembayaran:</label>
+      <select id="metode-input" class="w-full p-2 border rounded mb-4">
+        <option value="Cash">Cash</option>
+        <option value="QRIS">QRIS</option>
+      </select>
+      <div class="flex justify-end gap-2">
+        <button id="cancel-btn" class="px-4 py-2 bg-gray-300 rounded">Batal</button>
+        <button id="submit-btn" class="px-4 py-2 bg-green-500 text-white rounded">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuList = [
+      "Cafe Latte", "Gula Aren", "Popcorn Latte", "Matcha", "Choco Hazel",
+      "Americano", "Blush Berry", "Pink Potion", "Thai Tea", "Spanish Latte", "Butterscotch Latte"
+    ];
+
+    const menuContainer = document.getElementById("menu");
+    const popup = document.getElementById("popup");
+    const popupTitle = document.getElementById("popup-title");
+    const jumlahInput = document.getElementById("jumlah-input");
+    const metodeInput = document.getElementById("metode-input");
+    const cancelBtn = document.getElementById("cancel-btn");
+    const submitBtn = document.getElementById("submit-btn");
+    const rekapBody = document.getElementById("rekap-body");
+
+    let selectedMenu = "";
+    let transaksi = [];
+
+    // Buat tombol menu
+    menuList.forEach(menu => {
+      const btn = document.createElement("button");
+      btn.textContent = menu;
+      btn.className = "p-3 bg-amber-400 hover:bg-amber-500 text-white font-semibold rounded-lg shadow";
+      btn.onclick = () => openPopup(menu);
+      menuContainer.appendChild(btn);
+    });
+
+    function openPopup(menu) {
+      selectedMenu = menu;
+      popupTitle.textContent = `Tambah Penjualan: ${menu}`;
+      jumlahInput.value = "";
+      metodeInput.value = "Cash";
+      popup.classList.remove("hidden");
+    }
+
+    function closePopup() {
+      popup.classList.add("hidden");
+    }
+
+    function tambahRekap(menu, jumlah, metode) {
+      let existing = transaksi.find(t => t.menu === menu);
+      if (!existing) {
+        existing = { menu, cash: 0, qris: 0 };
+        transaksi.push(existing);
+      }
+      if (metode === "Cash") {
+        existing.cash += jumlah;
+      } else {
+        existing.qris += jumlah;
+      }
+      updateTable();
+    }
+
+    function updateTable() {
+      rekapBody.innerHTML = "";
+      transaksi.forEach((t, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td class="border p-2">${i + 1}</td>
+          <td class="border p-2 font-semibold">${t.menu}</td>
+          <td class="border p-2 editable text-blue-700 cursor-pointer" data-type="cash" data-index="${i}">${t.cash}</td>
+          <td class="border p-2 editable text-green-700 cursor-pointer" data-type="qris" data-index="${i}">${t.qris}</td>
+        `;
+        rekapBody.appendChild(row);
+      });
+
+      // Klik untuk edit
+      document.querySelectorAll(".editable").forEach(cell => {
+        cell.addEventListener("click", function() {
+          const i = this.dataset.index;
+          const tipe = this.dataset.type;
+          const currentValue = this.textContent.trim();
+          const newValue = prompt(`Ubah jumlah ${tipe.toUpperCase()} untuk ${transaksi[i].menu}:`, currentValue);
+          if (newValue !== null && !isNaN(newValue) && newValue >= 0) {
+            transaksi[i][tipe] = parseInt(newValue);
+            updateTable();
+          }
+        });
+      });
+    }
+
+    cancelBtn.onclick = closePopup;
+
+    submitBtn.onclick = () => {
+      const jumlah = parseInt(jumlahInput.value);
+      const metode = metodeInput.value;
+      if (!jumlah || jumlah <= 0) {
+        alert("Masukkan jumlah yang valid!");
+        return;
+      }
+      tambahRekap(selectedMenu, jumlah, metode);
+      closePopup();
+    };
+  </script>
+</body>
+</html>
