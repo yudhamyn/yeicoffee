@@ -144,6 +144,29 @@ button {
 .reset { background:#e53935; color:white; }
 .export { background:#673ab7; color:white; }
 
+/* ===== FIX PDF EXPORT ===== */
+.pdf-mode {
+  padding: 20px 30px !important; /* jarak kiri kanan */
+  box-sizing: border-box;
+  width: 1200px; /* fix width biar tidak kepotong */
+  margin: auto;
+  background: white;
+}
+
+.pdf-mode table {
+  width: 100% !important;
+}
+
+.pdf-mode .container {
+  box-shadow: none !important;
+  border: 2px solid #ddd; /* 🔥 border kiri kanan */
+}
+
+/* sembunyikan saat export PDF */
+.pdf-mode .no-print {
+  display: none !important;
+}
+
 /* MOBILE */
 @media(max-width:768px){
   .main { flex-direction:column; }
@@ -288,10 +311,10 @@ button {
 
 </div>
 
-<button class="save">💾 Simpan</button>
-<button class="reset" onclick="location.reload()">🔄 Reset</button>
-<button class="export" onclick="exportPDF()">📤 Export PDF</button>
-<button style="background:#65c6da;" onclick="window.location.href='index.html'">
+<button class="save no-print">💾 Simpan</button>
+<button class="reset no-print" onclick="location.reload()">🔄 Reset</button>
+<button class="export no-print" onclick="exportPDF()">📤 Export PDF</button>
+<button class="no-print" style="background:#65c6da;" onclick="window.location.href='index.html'">
 🚀 back to rekap awal
 </button>
 
@@ -399,45 +422,70 @@ document.addEventListener("input",hitung);
 
 // EXPORT PDF
 async function exportPDF(){
-const { jsPDF } = window.jspdf;
-const canvas = await html2canvas(document.getElementById("laporan"),{scale:2});
-const imgData = canvas.toDataURL("image/png");
+  const { jsPDF } = window.jspdf;
 
-const pdf = new jsPDF("p","mm","a4");
-const imgWidth = 210;
-const imgHeight = canvas.height * imgWidth / canvas.width;
+  const element = document.getElementById("laporan");
 
-let heightLeft = imgHeight;
-let position = 0;
+  // 🔥 AKTIFKAN MODE PDF
+  element.classList.add("pdf-mode");
 
-pdf.addImage(imgData,"PNG",0,position,imgWidth,imgHeight);
-heightLeft -= 297;
+  // tunggu render ulang biar layout stabil
+  await new Promise(r => setTimeout(r, 300));
 
-while(heightLeft > 0){
-position -= 297;
-pdf.addPage();
-pdf.addImage(imgData,"PNG",0,position,imgWidth,imgHeight);
-heightLeft -= 297;
-}
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+    windowWidth: element.scrollWidth
+  });
 
-const tanggalInput = document.getElementById("tanggal").value;
-const picInput = document.getElementById("pic").value.trim();
+  const imgData = canvas.toDataURL("image/png");
 
-let namaFile = "Laporan_YeiCoffee";
+  const pdf = new jsPDF({
+    orientation: "l", // 🔥 landscape biar lega
+    unit: "mm",
+    format: "a4"
+  });
 
-// format tanggal ke DD-MM-YYYY
-if (tanggalInput) {
-  const [year, month, day] = tanggalInput.split("-");
-  namaFile += `_${day}-${month}-${year}`;
-}
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
 
-// tambah PIC (hilangkan spasi biar aman)
-if (picInput) {
-  const picClean = picInput.replace(/\s+/g, "_");
-  namaFile += `_${picClean}`;
-}
+  const imgWidth = pageWidth;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-pdf.save(namaFile + ".pdf");
+  let heightLeft = imgHeight;
+  let position = 0;
+
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+  heightLeft -= pageHeight;
+
+  while (heightLeft > 0) {
+    position -= pageHeight;
+    pdf.addPage();
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+  }
+
+  // 🔥 BALIKIN MODE NORMAL
+  element.classList.remove("pdf-mode");
+
+  // ===== NAMA FILE =====
+  const tanggalInput = document.getElementById("tanggal").value;
+  const picInput = document.getElementById("pic").value.trim();
+
+  let namaFile = "Laporan_YeiCoffee";
+
+  if (tanggalInput) {
+    const [year, month, day] = tanggalInput.split("-");
+    namaFile += `_${day}-${month}-${year}`;
+  }
+
+  if (picInput) {
+    const picClean = picInput.replace(/[^a-zA-Z0-9]/g, "_");
+    namaFile += `_${picClean}`;
+  }
+
+  pdf.save(namaFile + ".pdf");
+
 }
 </script>
 
