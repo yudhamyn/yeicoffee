@@ -373,7 +373,6 @@ button {
 
 </div>
 
-<button class="save no-print">💾 Simpan</button>
 <button class="reset no-print" onclick="resetAll()">🔄 Reset</button>
 <button class="export no-print" onclick="exportPDF()">📤 Export PDF</button>
 <button class="no-print" style="background:#65c6da;" onclick="window.location.href='index.html'">
@@ -485,13 +484,10 @@ document.addEventListener("input",hitung);
 // EXPORT PDF
 async function exportPDF(){
   const { jsPDF } = window.jspdf;
-
   const element = document.getElementById("laporan");
 
-  // 🔥 AKTIFKAN MODE PDF
+  // aktifkan mode pdf
   element.classList.add("pdf-mode");
-
-  // tunggu render ulang biar layout stabil
   await new Promise(r => setTimeout(r, 300));
 
   const canvas = await html2canvas(element, {
@@ -502,35 +498,34 @@ async function exportPDF(){
 
   const imgData = canvas.toDataURL("image/png");
 
-  const pdf = new jsPDF({
-    orientation: "l", // 🔥 landscape biar lega
-    unit: "mm",
-    format: "a4"
-  });
+  // 🔥 pakai landscape biar lebih lega
+  const pdf = new jsPDF("p", "mm", "a4");
 
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
 
-  const imgWidth = pageWidth;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  // ukuran asli gambar
+  const imgWidth = canvas.width;
+  const imgHeight = canvas.height;
 
-  let heightLeft = imgHeight;
-  let position = 0;
+  // 🔥 hitung scale biar masuk 1 halaman
+  const ratio = Math.min(
+    pageWidth / imgWidth,
+    pageHeight / imgHeight
+  );
 
-  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-  heightLeft -= pageHeight;
+  const finalWidth = imgWidth * ratio;
+  const finalHeight = imgHeight * ratio;
 
-  while (heightLeft > 0) {
-    position -= pageHeight;
-    pdf.addPage();
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
-  }
+  // center posisi
+  const x = (pageWidth - finalWidth) / 2;
+  const y = (pageHeight - finalHeight) / 2;
 
-  // 🔥 BALIKIN MODE NORMAL
+  pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
+
   element.classList.remove("pdf-mode");
 
-  // ===== NAMA FILE =====
+  // nama file
   const tanggalInput = document.getElementById("tanggal").value;
   const picInput = document.getElementById("pic").value.trim();
 
@@ -547,7 +542,6 @@ async function exportPDF(){
   }
 
   pdf.save(namaFile + ".pdf");
-
 }
 
 
