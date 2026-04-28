@@ -167,6 +167,58 @@ button {
   display: none !important;
 }
 
+
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+
+.modal-box {
+  background:white;
+  padding:25px;
+  border-radius:16px;
+  width:90%;
+  max-width:350px;
+  text-align:center;
+  animation:pop 0.25s ease;
+}
+
+@keyframes pop {
+  from { transform:scale(0.8); opacity:0; }
+  to { transform:scale(1); opacity:1; }
+}
+
+.modal-actions {
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.modal-actions button {
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.btn-cancel {
+  background:#ccc;
+}
+
+.btn-confirm {
+  background:#e53935;
+  color:white;
+}
+
 /* MOBILE */
 @media(max-width:768px){
   .main { flex-direction:column; }
@@ -178,7 +230,16 @@ button {
 <body>
 
 <div class="container" id="laporan">
-
+<div id="confirmModal" class="modal">
+  <div class="modal-box">
+    <h3>⚠️ Reset Data</h3>
+    <p>Yakin ingin menghapus semua data?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Batal</button>
+      <button class="btn-confirm" onclick="confirmReset()">Ya, Reset</button>
+    </div>
+  </div>
+</div>
 <h1>Laporan Harian</h1>
 
 <div class="header">
@@ -490,11 +551,20 @@ async function exportPDF(){
 }
 
 
+// buka modal
 function resetAll(){
-  if(confirm("Reset semua data?")){
-    localStorage.removeItem("laporanYei");
-    location.reload();
-  }
+  document.getElementById("confirmModal").style.display = "flex";
+}
+
+// tutup modal
+function closeModal(){
+  document.getElementById("confirmModal").style.display = "none";
+}
+
+// aksi reset
+function confirmReset(){
+  localStorage.removeItem("laporanYei");
+  location.reload();
 }
 
 
