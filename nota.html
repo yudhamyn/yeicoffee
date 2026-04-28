@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laporan Harian - Yei Coffee</title>
+
+<style>
+:root {
+  --primary:#5a87b5;
+  --border:#cfd8dc;
+  --bg:#f4f7fb;
+}
+
+body {
+  font-family:"Segoe UI";
+  background:var(--bg);
+  margin:0;
+  padding:10px;
+}
+
+.container {
+  max-width:1200px;
+  margin:auto;
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+h1 { text-align:center; color:var(--primary); }
+
+.header {
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.checkbox-group { display:flex; gap:15px; }
+
+/* TABLE */
+.table-wrapper { overflow-x:auto; }
+
+table {
+  width:100%;
+  min-width:700px;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+
+th, td {
+  border:1px solid var(--border);
+  padding:8px;
+  text-align:center;
+}
+
+th { background:#e3f2fd; }
+
+td[contenteditable] { background:#fafafa; }
+
+tfoot td {
+  background:#e3f2fd;
+  font-weight:bold;
+}
+
+/* LAYOUT */
+.main { display:flex; gap:15px; flex-wrap:wrap; }
+.left { flex:3; }
+.right { flex:1; }
+
+/* REKAP CUP */
+.side-box {
+  border-radius:16px;
+  padding:20px;
+  background:linear-gradient(135deg,#e3f2fd,#bbdefb);
+}
+
+.side-box p {
+  display:flex;
+  justify-content:space-between;
+}
+
+/* REKAP UANG */
+.rekap-uang {
+  margin-top:20px;
+  padding:20px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#fff8e1,#ffe0b2);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.rekap-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.rekap-item {
+  display:flex;
+  flex-direction:column;
+}
+
+.rekap-item label {
+  font-size:13px;
+  color:#555;
+  margin-bottom:3px;
+}
+
+.rekap-item input {
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+.rekap-summary {
+  margin-top:15px;
+  background:white;
+  padding:15px;
+  border-radius:12px;
+}
+
+.rekap-summary p {
+  display:flex;
+  justify-content:space-between;
+}
+
+.total-bersih {
+  font-size:20px;
+  font-weight:bold;
+  color:#2e7d32;
+}
+
+/* BUTTON */
+button {
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border:none;
+  border-radius:8px;
+}
+
+.save { background:#4CAF50; color:white; }
+.reset { background:#e53935; color:white; }
+.export { background:#673ab7; color:white; }
+
+/* MOBILE */
+@media(max-width:768px){
+  .main { flex-direction:column; }
+  .rekap-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="laporan">
+
+<h1>Laporan Harian</h1>
+
+<div class="header">
+  <div>Tanggal: <input type="date" id="tanggal"></div>
+  <div>PIC: <input type="text" id="pic"></div>
+
+  <div class="checkbox-group">
+    <label><input type="checkbox" id="fulltime"> Full Time</label>
+    <label><input type="checkbox" id="parttime"> Part Time</label>
+  </div>
+</div>
+
+<div class="main">
+
+<div class="left">
+
+<div class="table-wrapper">
+<table id="mainTable">
+<thead>
+<tr>
+<th>No</th>
+<th>Menu</th>
+<th>Awal</th>
+<th>Rusak/Compliment</th>
+<th>QRIS</th>
+<th>Cash</th>
+<th>Total</th>
+<th>Akhir</th>
+</tr>
+</thead>
+<tbody></tbody>
+
+<tfoot>
+<tr>
+<td colspan="2">TOTAL</td>
+<td id="tAwal">0</td>
+<td id="tRusak">0</td>
+<td id="tQris">0</td>
+<td id="tCash">0</td>
+<td id="tJual">0</td>
+<td id="tAkhir">0</td>
+</tr>
+</tfoot>
+
+</table>
+</div>
+
+<h3>Summary Pendapatan</h3>
+<table id="summaryTable">
+<thead>
+<tr>
+<th>Menu</th>
+<th>Cup QRIS</th>
+<th>Total QRIS</th>
+<th>Cup Cash</th>
+<th>Total Cash</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody></tbody>
+<tfoot>
+<tr>
+<th>TOTAL</th>
+<th id="sumCupQris">0</th>
+<th id="sumRpQris">0</th>
+<th id="sumCupCash">0</th>
+<th id="sumRpCash">0</th>
+<th id="grandTotal">0</th>
+</tr>
+</tfoot>
+</table>
+
+</div>
+
+<div class="right">
+<div class="side-box">
+<h3>Rekap Cup</h3>
+<p>Awal <b id="cupAwal">0</b></p>
+<p>Rusak/Compliment <b id="cupRusak">0</b></p>
+<p>QRIS <b id="cupQris">0</b></p>
+<p>Cash <b id="cupCash">0</b></p>
+<p>Terjual <b id="cupTotal">0</b></p>
+<p>Akhir <b id="cupAkhir">0</b></p>
+</div>
+</div>
+
+</div>
+
+<!-- REKAP UANG -->
+<div class="rekap-uang">
+
+<h3>Rekap Uang</h3>
+
+<div class="rekap-grid">
+
+<div class="rekap-item">
+<label>Total QRIS (Rp)</label>
+<input type="number" id="uangQris">
+</div>
+
+<div class="rekap-item">
+<label>Total Cash (Rp)</label>
+<input type="number" id="uangCash">
+</div>
+
+<div class="rekap-item">
+<label>Pengeluaran (Rp)</label>
+<input type="number" id="pengeluaran">
+</div>
+
+<div class="rekap-item">
+<label>Keterangan</label>
+<input type="text" id="ketPengeluaran">
+</div>
+
+<div class="rekap-item">
+<label>Minus Cash (Rp)</label>
+<input type="number" id="minusCash">
+</div>
+
+</div>
+
+<div class="rekap-summary">
+<p>Total Masuk <b id="totalMasuk">0</b></p>
+<p>Pengeluaran <b id="outRp">0</b></p>
+<p>Minus <b id="minusRp">0</b></p>
+<hr>
+<p class="total-bersih">Total Bersih <span id="totalBersih">0</span></p>
+</div>
+
+</div>
+
+<button class="save">💾 Simpan</button>
+<button class="reset" onclick="location.reload()">🔄 Reset</button>
+<button class="export" onclick="exportPDF()">📤 Export PDF</button>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+const menuHarga={
+"Yei Coffee":13000,"Cafe Latte":8000,"Gula Aren":10000,
+"Popcorn Latte":12000,"Matcha":13000,"Choco Hazel":13000,
+"Americano":8000,"Spanish Latte":12000,"Butterscotch Latte":15000
+};
+
+const tbody=document.querySelector("#mainTable tbody");
+const summaryBody=document.querySelector("#summaryTable tbody");
+
+Object.keys(menuHarga).forEach((menu,i)=>{
+tbody.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>${menu}</td>
+<td contenteditable></td>
+<td contenteditable></td>
+<td contenteditable></td>
+<td contenteditable></td>
+<td>0</td>
+<td>0</td>
+</tr>`;
+
+summaryBody.innerHTML+=`
+<tr>
+<td>${menu}</td>
+<td>0</td><td>0</td>
+<td>0</td><td>0</td>
+<td>0</td>
+</tr>`;
+});
+
+function hitung(){
+let tAw=0,tRu=0,tQ=0,tC=0,tJ=0,tAk=0;
+let sumQ=0,sumRQ=0,sumC=0,sumRC=0,grand=0;
+
+document.querySelectorAll("#mainTable tbody tr").forEach((row,i)=>{
+let aw=+row.children[2].innerText||0;
+let ru=+row.children[3].innerText||0;
+let q=+row.children[4].innerText||0;
+let c=+row.children[5].innerText||0;
+
+let jual=q+c;
+let akhir=Math.max(aw-ru-jual,0);
+
+row.children[6].innerText=jual;
+row.children[7].innerText=akhir;
+
+let harga=Object.values(menuHarga)[i];
+
+let tq=q*harga;
+let tc=c*harga;
+let tot=tq+tc;
+
+let s=summaryBody.children[i];
+s.children[1].innerText=q;
+s.children[2].innerText=tq.toLocaleString("id-ID");
+s.children[3].innerText=c;
+s.children[4].innerText=tc.toLocaleString("id-ID");
+s.children[5].innerText=tot.toLocaleString("id-ID");
+
+tAw+=aw; tRu+=ru; tQ+=q; tC+=c; tJ+=jual; tAk+=akhir;
+sumQ+=q; sumRQ+=tq; sumC+=c; sumRC+=tc; grand+=tot;
+});
+
+tAwal.innerText=tAw;
+tRusak.innerText=tRu;
+tQris.innerText=tQ;
+tCash.innerText=tC;
+tJual.innerText=tJ;
+tAkhir.innerText=tAk;
+
+cupAwal.innerText=tAw;
+cupRusak.innerText=tRu;
+cupQris.innerText=tQ;
+cupCash.innerText=tC;
+cupTotal.innerText=tJ;
+cupAkhir.innerText=tAk;
+
+sumCupQris.innerText=sumQ;
+sumRpQris.innerText=sumRQ.toLocaleString("id-ID");
+sumCupCash.innerText=sumC;
+sumRpCash.innerText=sumRC.toLocaleString("id-ID");
+grandTotal.innerText=grand.toLocaleString("id-ID");
+
+let masuk=(+uangQris.value||0)+(+uangCash.value||0);
+let keluar=+pengeluaran.value||0;
+let minus=+minusCash.value||0;
+
+totalMasuk.innerText=masuk.toLocaleString("id-ID");
+outRp.innerText=keluar.toLocaleString("id-ID");
+minusRp.innerText=minus.toLocaleString("id-ID");
+totalBersih.innerText=(masuk-keluar-minus).toLocaleString("id-ID");
+}
+
+document.addEventListener("input",hitung);
+
+// EXPORT PDF
+async function exportPDF(){
+const { jsPDF } = window.jspdf;
+const canvas = await html2canvas(document.getElementById("laporan"),{scale:2});
+const imgData = canvas.toDataURL("image/png");
+
+const pdf = new jsPDF("p","mm","a4");
+const imgWidth = 210;
+const imgHeight = canvas.height * imgWidth / canvas.width;
+
+let heightLeft = imgHeight;
+let position = 0;
+
+pdf.addImage(imgData,"PNG",0,position,imgWidth,imgHeight);
+heightLeft -= 297;
+
+while(heightLeft > 0){
+position -= 297;
+pdf.addPage();
+pdf.addImage(imgData,"PNG",0,position,imgWidth,imgHeight);
+heightLeft -= 297;
+}
+
+pdf.save("Laporan_YeiCoffee.pdf");
+}
+</script>
+
+</body>
+</html>
