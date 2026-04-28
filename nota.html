@@ -202,7 +202,7 @@ button {
 <th>No</th>
 <th>Menu</th>
 <th>Awal</th>
-<th>Rusak/Compliment</th>
+<th>Rus/Comp</th>
 <th>QRIS</th>
 <th>Cash</th>
 <th>Total</th>
@@ -312,7 +312,7 @@ button {
 </div>
 
 <button class="save no-print">💾 Simpan</button>
-<button class="reset no-print" onclick="location.reload()">🔄 Reset</button>
+<button class="reset no-print" onclick="resetAll()">🔄 Reset</button>
 <button class="export no-print" onclick="exportPDF()">📤 Export PDF</button>
 <button class="no-print" style="background:#65c6da;" onclick="window.location.href='index.html'">
 🚀 back to rekap awal
@@ -487,6 +487,81 @@ async function exportPDF(){
   pdf.save(namaFile + ".pdf");
 
 }
+
+
+function resetAll(){
+  if(confirm("Reset semua data?")){
+    localStorage.removeItem("laporanYei");
+    location.reload();
+  }
+}
+
+
+// ===== AUTO SAVE LOCAL STORAGE =====
+function saveLocal(){
+  const data = {
+    tanggal: document.getElementById("tanggal").value,
+    pic: document.getElementById("pic").value,
+    fulltime: document.getElementById("fulltime").checked,
+    parttime: document.getElementById("parttime").checked,
+    uangQris: document.getElementById("uangQris").value,
+    uangCash: document.getElementById("uangCash").value,
+    pengeluaran: document.getElementById("pengeluaran").value,
+    ket: document.getElementById("ketPengeluaran").value,
+    minus: document.getElementById("minusCash").value,
+    table: []
+  };
+
+  document.querySelectorAll("#mainTable tbody tr").forEach(row=>{
+    data.table.push({
+      awal: row.children[2].innerText,
+      rusak: row.children[3].innerText,
+      qris: row.children[4].innerText,
+      cash: row.children[5].innerText
+    });
+  });
+
+  localStorage.setItem("laporanYei", JSON.stringify(data));
+}
+
+// ===== LOAD DATA =====
+function loadLocal(){
+  const data = JSON.parse(localStorage.getItem("laporanYei") || "{}");
+
+  if(!data.table) return;
+
+  document.getElementById("tanggal").value = data.tanggal || "";
+  document.getElementById("pic").value = data.pic || "";
+  document.getElementById("fulltime").checked = data.fulltime || false;
+  document.getElementById("parttime").checked = data.parttime || false;
+  document.getElementById("uangQris").value = data.uangQris || "";
+  document.getElementById("uangCash").value = data.uangCash || "";
+  document.getElementById("pengeluaran").value = data.pengeluaran || "";
+  document.getElementById("ketPengeluaran").value = data.ket || "";
+  document.getElementById("minusCash").value = data.minus || "";
+
+  const rows = document.querySelectorAll("#mainTable tbody tr");
+
+  data.table.forEach((d,i)=>{
+    if(rows[i]){
+      rows[i].children[2].innerText = d.awal || "";
+      rows[i].children[3].innerText = d.rusak || "";
+      rows[i].children[4].innerText = d.qris || "";
+      rows[i].children[5].innerText = d.cash || "";
+    }
+  });
+
+  hitung();
+}
+
+// ===== AUTO TRIGGER =====
+document.addEventListener("input", saveLocal);
+document.addEventListener("change", saveLocal);
+
+// LOAD SAAT BUKA
+window.addEventListener("load", ()=>{
+  loadLocal();
+});
 </script>
 
 </body>
