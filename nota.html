@@ -131,6 +131,11 @@ tfoot td {
   color:#2e7d32;
 }
 
+#cashBersih {
+  color:#1565c0;
+  font-weight:bold;
+}
+
 /* BUTTON */
 button {
   width:100%;
@@ -378,6 +383,7 @@ button {
 
 <button class="reset no-print" onclick="resetAll()">🔄 Reset</button>
 <button class="export no-print" onclick="exportPDF()">📤 Export PDF</button>
+<button class="export no-print" onclick="exportPNG()">🖼️ Export PNG</button>
 <button class="no-print" style="background:#65c6da;" onclick="window.location.href='index.html'">
 🚀 back to rekap awal
 </button>
@@ -548,6 +554,51 @@ async function exportPDF(){
 
   pdf.save(namaFile + ".pdf");
 }
+
+
+// EXPORT PNG
+async function exportPNG(){
+  const element = document.getElementById("laporan");
+
+  // aktifkan mode PDF biar rapi & tanpa tombol
+  element.classList.add("pdf-mode");
+
+  await new Promise(r => setTimeout(r, 300));
+
+  const canvas = await html2canvas(element, {
+    scale: 3, // 🔥 makin besar makin HD
+    useCORS: true,
+    windowWidth: element.scrollWidth
+  });
+
+  const link = document.createElement("a");
+
+  // nama file
+  const tanggalInput = document.getElementById("tanggal").value;
+  const picInput = document.getElementById("pic").value.trim();
+
+  let namaFile = "Laporan_YeiCoffee";
+
+  if (tanggalInput) {
+    const [year, month, day] = tanggalInput.split("-");
+    namaFile += `_${day}-${month}-${year}`;
+  }
+
+  if (picInput) {
+    const picClean = picInput.replace(/[^a-zA-Z0-9]/g, "_");
+    namaFile += `_${picClean}`;
+  }
+
+  link.download = namaFile + ".png";
+  link.href = canvas.toDataURL("image/png");
+
+  link.click();
+
+  // balikin normal
+  element.classList.remove("pdf-mode");
+}
+
+
 
 
 // buka modal
