@@ -420,7 +420,24 @@ pdf.addImage(imgData,"PNG",0,position,imgWidth,imgHeight);
 heightLeft -= 297;
 }
 
-pdf.save("Laporan_YeiCoffee.pdf");
+const tanggalInput = document.getElementById("tanggal").value;
+const picInput = document.getElementById("pic").value.trim();
+
+let namaFile = "Laporan_YeiCoffee";
+
+// format tanggal ke DD-MM-YYYY
+if (tanggalInput) {
+  const [year, month, day] = tanggalInput.split("-");
+  namaFile += `_${day}-${month}-${year}`;
+}
+
+// tambah PIC (hilangkan spasi biar aman)
+if (picInput) {
+  const picClean = picInput.replace(/\s+/g, "_");
+  namaFile += `_${picClean}`;
+}
+
+pdf.save(namaFile + ".pdf");
 }
 </script>
 
