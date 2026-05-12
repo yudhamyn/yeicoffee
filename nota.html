@@ -285,46 +285,54 @@ button {
 
 
 /* ===== SIMPLE ADDON STYLE ===== */
-
 .addon-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(2,1fr);
   gap:14px;
-  margin-top:15px;
+  margin-top:10px;
 }
 
-.addon-box{
+.addon-card{
   padding:14px;
   border-radius:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
   background:white;
-  box-shadow:0 4px 12px rgba(0,0,0,0.06);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  transition:0.2s;
 }
 
-.addon-box.qris{
-  border-left:6px solid #7b61ff;
-  background:#f6f3ff;
+.addon-card:hover{
+  transform:translateY(-2px);
 }
 
-.addon-box.cash{
-  border-left:6px solid #4caf50;
-  background:#f1fff4;
+.addon-card .title{
+  font-weight:700;
+  font-size:14px;
 }
 
-.addon-box label{
-  display:block;
-  font-weight:bold;
-  margin-bottom:8px;
-  color:#333;
+.addon-card .sub{
+  font-size:12px;
+  opacity:0.6;
 }
 
-.addon-box input{
-  width:100%;
-  padding:12px;
+.addon-card input{
+  padding:10px;
   border-radius:10px;
-  border:1px solid #ccc;
-  font-size:18px;
+  border:1px solid #ddd;
+  font-size:16px;
   font-weight:bold;
-  box-sizing:border-box;
+}
+
+.addon-card.purple{
+  border-left:5px solid #7b61ff;
+  background:#f7f4ff;
+}
+
+.addon-card.green{
+  border-left:5px solid #22c55e;
+  background:#f3fff6;
 }
 
 @media(max-width:768px){
@@ -499,57 +507,64 @@ Rekap Cup
 
 <h3>Rekap Uang</h3>
 
+<!-- INPUT UTAMA -->
 <div class="rekap-grid">
 
-<div class="rekap-item">
-<label>Total QRIS (Rp)</label>
-<input type="number" id="uangQris">
+  <div class="rekap-item">
+    <label>Total QRIS (Rp)</label>
+    <input type="number" id="uangQris">
+  </div>
+
+  <div class="rekap-item">
+    <label>Total Cash (Rp)</label>
+    <input type="number" id="uangCash">
+  </div>
+
+  <div class="rekap-item">
+    <label>Pengeluaran (Rp)</label>
+    <input type="number" id="pengeluaran">
+  </div>
+
+  <div class="rekap-item">
+    <label>Keterangan</label>
+    <input type="text" id="ketPengeluaran">
+  </div>
+
+  <div class="rekap-item">
+    <label>Minus Cash (Rp)</label>
+    <input type="number" id="minusCash">
+  </div>
+
 </div>
 
-<div class="rekap-item">
-<label>Total Cash (Rp)</label>
-<input type="number" id="uangCash">
-</div>
-
-<div class="rekap-item">
-<label>Pengeluaran (Rp)</label>
-<input type="number" id="pengeluaran">
-</div>
-
-<div class="rekap-item">
-<label>Keterangan</label>
-<input type="text" id="ketPengeluaran">
-</div>
-
-<div class="rekap-item">
-<label>Minus Cash (Rp)</label>
-<input type="number" id="minusCash">
-</div>
-
-<!-- ===== ADDON SIMPLE ===== -->
+<!-- ADDON SECTION -->
+<h4 style="margin-top:20px;">Add On</h4>
 
 <div class="addon-grid">
 
-  <div class="addon-box qris">
-    <label>Espresso QRIS (x3000)</label>
+  <div class="addon-card purple">
+    <div class="title">Espresso QRIS</div>
+    <div class="sub">(x3000)</div>
     <input type="number" id="espressoQris" value="0">
   </div>
 
-  <div class="addon-box cash">
-    <label>Espresso Cash (x3000)</label>
+  <div class="addon-card green">
+    <div class="title">Espresso Cash</div>
+    <div class="sub">(x3000)</div>
     <input type="number" id="espressoCash" value="0">
   </div>
 
-  <div class="addon-box qris">
-    <label>Add On Gula QRIS (x1000)</label>
+  <div class="addon-card purple">
+    <div class="title">Add On Gula QRIS</div>
+    <div class="sub">(x1000)</div>
     <input type="number" id="gulaQris" value="0">
   </div>
 
-  <div class="addon-box cash">
-    <label>Add On Gula Cash (x1000)</label>
+  <div class="addon-card green">
+    <div class="title">Add On Gula Cash</div>
+    <div class="sub">(x1000)</div>
     <input type="number" id="gulaCash" value="0">
   </div>
-
 </div>
 
 </div>
@@ -1091,31 +1106,3 @@ async function exportPNG(){
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
