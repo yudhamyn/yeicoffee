@@ -36,6 +36,7 @@ h1 { text-align:center; color:var(--primary); }
   flex-wrap:wrap;
   align-items:center;
   font-weight:bold;
+  /* ukuran text */
   font-size:20px;
 }
 
@@ -45,13 +46,13 @@ h1 { text-align:center; color:var(--primary); }
   border: 2px solid #0d4c50;
   border-radius: 10px;
   outline: none;
-  box-shadow:
+  box-shadow: 
     0 0 8px rgba(0, 240, 255, 0.4),
     inset 0 0 5px rgba(0, 240, 255, 0.2);
 }
 
 .header input:focus {
-  box-shadow:
+  box-shadow: 
     0 0 12px #00f0ff,
     0 0 20px rgba(0, 240, 255, 0.5);
 }
@@ -61,9 +62,8 @@ h1 { text-align:center; color:var(--primary); }
   gap:20px;
 }
 
-.table-wrapper {
-  overflow-x:auto;
-}
+/* TABLE */
+.table-wrapper { overflow-x:auto; }
 
 table {
   width:100%;
@@ -76,42 +76,37 @@ th, td {
   border:1px solid var(--border);
   padding:8px;
   text-align:center;
+  /* bold */
   font-weight:bold;
 }
 
-th {
-  background:#e3f2fd;
-}
+th { background:#e3f2fd; }
 
-td[contenteditable] {
-  background:#fafafa;
-}
+td[contenteditable] { background:#fafafa; }
 
 tfoot td {
   background:#e3f2fd;
   font-weight:bold;
 }
 
-.main {
-  display:flex;
-  gap:15px;
-  flex-wrap:wrap;
-}
+/* LAYOUT */
+.main { display:flex; gap:15px; flex-wrap:wrap; }
+.left { flex:3; }
+.right { flex:1; }
 
-.left {
-  flex:3;
-}
-
-.right {
-  flex:1;
-}
-
+/* REKAP CUP */
 .side-box {
   border-radius:16px;
   padding:20px;
   background:linear-gradient(135deg,#e3f2fd,#bbdefb);
 }
 
+.side-box p {
+  display:flex;
+  justify-content:space-between;
+}
+
+/* REKAP UANG */
 .rekap-uang {
   margin-top:20px;
   padding:20px;
@@ -166,57 +161,49 @@ tfoot td {
   font-weight:bold;
 }
 
+/* BUTTON */
 button {
   width:100%;
   padding:10px;
   margin-top:10px;
   border:none;
   border-radius:8px;
-  cursor:pointer;
 }
 
-.save {
-  background:#4CAF50;
-  color:white;
-}
+.save { background:#4CAF50; color:white; }
+.reset { background:#e53935; color:white; }
+.export { background:#673ab7; color:white; }
 
-.reset {
-  background:#e53935;
-  color:white;
-}
-
-.export {
-  background:#673ab7;
-  color:white;
-}
-
+/* ===== FIX PDF EXPORT ===== */
 .pdf-mode {
-  padding:20px 30px !important;
-  box-sizing:border-box;
-  width:1200px;
-  margin:auto;
-  background:white;
+  padding: 20px 30px !important; /* jarak kiri kanan */
+  box-sizing: border-box;
+  width: 1200px; /* fix width biar tidak kepotong */
+  margin: auto;
+  background: white;
 }
 
 .pdf-mode table {
-  width:100% !important;
+  width: 100% !important;
 }
 
 .pdf-mode .container {
-  box-shadow:none !important;
-  border:2px solid #ddd;
+  box-shadow: none !important;
+  border: 2px solid #ddd; /* 🔥 border kiri kanan */
 }
 
+/* sembunyikan saat export PDF */
 .pdf-mode .no-print {
-  display:none !important;
+  display: none !important;
 }
 
+
+
+/* MODAL */
 .modal {
   position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  top:0; left:0;
+  width:100%; height:100%;
   background:rgba(0,0,0,0.5);
   display:none;
   align-items:center;
@@ -231,6 +218,12 @@ button {
   width:90%;
   max-width:350px;
   text-align:center;
+  animation:pop 0.25s ease;
+}
+
+@keyframes pop {
+  from { transform:scale(0.8); opacity:0; }
+  to { transform:scale(1); opacity:1; }
 }
 
 .modal-actions {
@@ -241,6 +234,10 @@ button {
 
 .modal-actions button {
   flex:1;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
 }
 
 .btn-cancel {
@@ -252,118 +249,32 @@ button {
   color:white;
 }
 
-.table-rekap {
-  width:100%;
-  border-collapse:collapse;
-  text-align:center;
-  border:2px solid #114a4e;
-}
-
-.table-rekap th {
-  background:#001f3f;
-  color:#fff;
-  padding:10px;
-  border:2px solid #17effe;
-}
-
-.table-rekap td {
-  padding:10px;
-  font-weight:bold;
-  border:2px solid rgba(0,240,255,0.6);
-}
-
+/* MOBILE */
 @media(max-width:768px){
-  .main {
-    flex-direction:column;
-  }
-
-  .rekap-grid {
-    grid-template-columns:1fr;
-  }
+  .main { flex-direction:column; }
+  .rekap-grid { grid-template-columns:1fr; }
 }
-
-
-/* ===== SIMPLE ADDON STYLE ===== */
-
-.addon-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  margin-top:15px;
-}
-
-.addon-box{
-  padding:14px;
-  border-radius:16px;
-  background:white;
-  box-shadow:0 4px 12px rgba(0,0,0,0.06);
-}
-
-.addon-box.qris{
-  border-left:6px solid #7b61ff;
-  background:#f6f3ff;
-}
-
-.addon-box.cash{
-  border-left:6px solid #4caf50;
-  background:#f1fff4;
-}
-
-.addon-box label{
-  display:block;
-  font-weight:bold;
-  margin-bottom:8px;
-  color:#333;
-}
-
-.addon-box input{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  font-size:18px;
-  font-weight:bold;
-  box-sizing:border-box;
-}
-
-@media(max-width:768px){
-  .addon-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-
 </style>
 </head>
 
 <body>
 
 <div class="container" id="laporan">
-
 <div id="confirmModal" class="modal">
   <div class="modal-box">
     <h3>⚠️ Reset Data</h3>
     <p>Yakin ingin menghapus semua data?</p>
-
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">Batal</button>
       <button class="btn-confirm" onclick="confirmReset()">Ya, Reset</button>
     </div>
   </div>
 </div>
-
 <h1>Laporan Harian</h1>
 
 <div class="header">
-  <div>
-    Tanggal:
-    <input type="date" id="tanggal">
-  </div>
-
-  <div>
-    PIC:
-    <input type="text" id="pic">
-  </div>
+  <div>Tanggal: <input type="date" id="tanggal"></div>
+  <div>PIC: <input type="text" id="pic"></div>
 
   <div class="checkbox-group">
     <label><input type="checkbox" id="fulltime"> Full Time</label>
@@ -376,9 +287,7 @@ button {
 <div class="left">
 
 <div class="table-wrapper">
-
 <table id="mainTable">
-
 <thead>
 <tr>
 <th>No</th>
@@ -391,7 +300,6 @@ button {
 <th>Akhir</th>
 </tr>
 </thead>
-
 <tbody></tbody>
 
 <tfoot>
@@ -407,13 +315,10 @@ button {
 </tfoot>
 
 </table>
-
 </div>
 
 <h3>Summary Pendapatan</h3>
-
 <table id="summaryTable">
-
 <thead>
 <tr>
 <th>Menu</th>
@@ -424,27 +329,7 @@ button {
 <th>Total</th>
 </tr>
 </thead>
-
 <tbody></tbody>
-
-<tr>
-<td>Espresso</td>
-<td id="espressoCupQris">0</td>
-<td id="espressoTotalQris">0</td>
-<td id="espressoCupCash">0</td>
-<td id="espressoTotalCash">0</td>
-<td id="espressoGrand">0</td>
-</tr>
-
-<tr>
-<td>Add On Gula</td>
-<td id="gulaCupQris">0</td>
-<td id="gulaTotalQris">0</td>
-<td id="gulaCupCash">0</td>
-<td id="gulaTotalCash">0</td>
-<td id="gulaGrand">0</td>
-</tr>
-
 <tfoot>
 <tr>
 <th>TOTAL</th>
@@ -455,45 +340,74 @@ button {
 <th id="grandTotal">0</th>
 </tr>
 </tfoot>
-
 </table>
-
 </div>
+</div>
+<br>
+
+
+
+<style>
+.table-rekap {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  border: 2px solid #114a4e; /* border luar */
+  box-shadow: 
+    0 0 10px #04454a,
+    0 0 20px #00f0ff; /* glow luar */
+}
+
+.table-rekap th {
+  background: #001f3f;
+  color: #ffffff;
+  padding: 10px;
+  border: 2px solid #17effe; /* border tebal neon */
+  text-shadow: 
+    0 0 5px #1cb4bf,
+    0 0 10px #033438,
+    0 0 20px #00f0ff;
+  box-shadow: 
+    inset 0 -2px 10px rgba(0, 240, 255, 0.5),
+    0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.table-rekap td {
+  padding: 10px;
+  font-weight: bold;
+  border: 2px solid rgba(0, 240, 255, 0.6); /* border dalam */
+  box-shadow: 
+    inset 0 0 5px rgba(0, 240, 255, 0.3);
+}
+</style>
 
 <div class="right">
-
-<div class="side-box">
-
-<h2 style="text-align:center;color:#001524;">
-Rekap Cup
-</h2>
-
-<table class="table-rekap">
-<tr>
-<th>Awal</th>
-<th>Rusak</th>
-<th>QRIS</th>
-<th>Cash</th>
-<th>Terjual</th>
-<th>Akhir</th>
-</tr>
-
-<tr>
-<td id="cupAwal">0</td>
-<td id="cupRusak">0</td>
-<td id="cupQris">0</td>
-<td id="cupCash">0</td>
-<td id="cupTotal">0</td>
-<td id="cupAkhir">0</td>
-</tr>
-</table>
-
+  <div class="side-box">
+    <h2 style="text-align: center; color: #001524;">Rekap Cup</h2>
+    <table class="table-rekap">
+      <tr>
+        <th>Awal</th>
+        <th>Rusak / Compliment</th>
+        <th>QRIS</th>
+        <th>Cash</th>
+        <th>Terjual</th>
+        <th>Akhir</th>
+      </tr>
+      <tr>
+        <td id="cupAwal">0</td>
+        <td id="cupRusak">0</td>
+        <td id="cupQris">0</td>
+        <td id="cupCash">0</td>
+        <td id="cupTotal">0</td>
+        <td id="cupAkhir">0</td>
+      </tr>
+    </table>
+  </div>
 </div>
 
-</div>
 
-</div>
 
+<!-- REKAP UANG -->
 <div class="rekap-uang">
 
 <h3>Rekap Uang</h3>
@@ -525,95 +439,43 @@ Rekap Cup
 <input type="number" id="minusCash">
 </div>
 
-<!-- ===== ADDON SIMPLE ===== -->
-
-<div class="addon-grid">
-
-  <div class="addon-box qris">
-    <label>Espresso QRIS (x3000)</label>
-    <input type="number" id="espressoQris" value="0">
-  </div>
-
-  <div class="addon-box cash">
-    <label>Espresso Cash (x3000)</label>
-    <input type="number" id="espressoCash" value="0">
-  </div>
-
-  <div class="addon-box qris">
-    <label>Add On Gula QRIS (x1000)</label>
-    <input type="number" id="gulaQris" value="0">
-  </div>
-
-  <div class="addon-box cash">
-    <label>Add On Gula Cash (x1000)</label>
-    <input type="number" id="gulaCash" value="0">
-  </div>
-
-</div>
-
 </div>
 
 <div class="rekap-summary">
-
 <p>Total Masuk <b id="totalMasuk">0</b></p>
 <p>Pengeluaran <b id="outRp">0</b></p>
-<p>Cash - Pengeluaran <b id="cashBersih">0</b></p>
+<p>Cash - Pengeluaran <b id="cashBersih">0</b></p> <!-- 🔥 BARU -->
 <p>Minus <b id="minusRp">0</b></p>
-
 <hr>
-
-<p class="total-bersih">
-Total Bersih
-<span id="totalBersih">0</span>
-</p>
-
+<p class="total-bersih">Total Bersih <span id="totalBersih">0</span></p>
 </div>
 
 </div>
 
-<button class="reset" onclick="resetAll()">
-🔄 Reset
-</button>
-
-<button class="export" onclick="exportPDF()">
-📤 Export PDF
-</button>
-
-<button class="export" onclick="exportPNG()">
-🖼️ Export PNG
-</button>
-
-<button
-class="no-print"
-onclick="window.location.href='index.html'">
+<button class="reset no-print" onclick="resetAll()">🔄 Reset</button>
+<button class="export no-print" onclick="exportPDF()">📤 Export PDF</button>
+<button class="export no-print" onclick="exportPNG()">🖼️ Export PNG</button>
+<button class="no-print" style="background:#65c6da;" onclick="window.location.href='index.html'">
 🚀 back to rekap awal
 </button>
 
 </div>
 
-<script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-const menuHarga = {
-"Yei Coffee":13000,
-"Cafe Latte":8000,
-"Gula Aren":10000,
-"Popcorn Latte":12000,
-"Matcha":13000,
-"Choco Hazel":13000,
-"Americano":8000,
-"Spanish Latte":12000,
-"Butterscotch Latte":15000
+<script>
+const menuHarga={
+"Yei Coffee":13000,"Cafe Latte":8000,"Gula Aren":10000,
+"Popcorn Latte":12000,"Matcha":13000,"Choco Hazel":13000,
+"Americano":8000,"Spanish Latte":12000,"Butterscotch Latte":15000
 };
 
-const tbody =
-document.querySelector("#mainTable tbody");
-
-const summaryBody =
-document.querySelector("#summaryTable tbody");
+const tbody=document.querySelector("#mainTable tbody");
+const summaryBody=document.querySelector("#summaryTable tbody");
 
 Object.keys(menuHarga).forEach((menu,i)=>{
-
-tbody.innerHTML += `
+tbody.innerHTML+=`
 <tr>
 <td>${i+1}</td>
 <td>${menu}</td>
@@ -623,30 +485,22 @@ tbody.innerHTML += `
 <td contenteditable></td>
 <td>0</td>
 <td>0</td>
-</tr>
-`;
+</tr>`;
 
-summaryBody.innerHTML += `
+summaryBody.innerHTML+=`
 <tr>
 <td>${menu}</td>
+<td>0</td><td>0</td>
+<td>0</td><td>0</td>
 <td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-`;
-
+</tr>`;
 });
 
 function hitung(){
-
 let tAw=0,tRu=0,tQ=0,tC=0,tJ=0,tAk=0;
 let sumQ=0,sumRQ=0,sumC=0,sumRC=0,grand=0;
 
-document.querySelectorAll("#mainTable tbody tr")
-.forEach((row,i)=>{
-
+document.querySelectorAll("#mainTable tbody tr").forEach((row,i)=>{
 let aw=+row.children[2].innerText||0;
 let ru=+row.children[3].innerText||0;
 let q=+row.children[4].innerText||0;
@@ -665,29 +519,14 @@ let tc=c*harga;
 let tot=tq+tc;
 
 let s=summaryBody.children[i];
-
 s.children[1].innerText=q;
 s.children[2].innerText=tq.toLocaleString("id-ID");
-
 s.children[3].innerText=c;
 s.children[4].innerText=tc.toLocaleString("id-ID");
-
 s.children[5].innerText=tot.toLocaleString("id-ID");
 
-tAw+=aw;
-tRu+=ru;
-tQ+=q;
-tC+=c;
-tJ+=jual;
-tAk+=akhir;
-
-sumQ+=q;
-sumRQ+=tq;
-sumC+=c;
-sumRC+=tc;
-
-grand+=tot;
-
+tAw+=aw; tRu+=ru; tQ+=q; tC+=c; tJ+=jual; tAk+=akhir;
+sumQ+=q; sumRQ+=tq; sumC+=c; sumRC+=tc; grand+=tot;
 });
 
 tAwal.innerText=tAw;
@@ -704,290 +543,218 @@ cupCash.innerText=tC;
 cupTotal.innerText=tJ;
 cupAkhir.innerText=tAk;
 
-// ===== ESPRESSO =====
-
-let espressoQ =
-+document.getElementById("espressoQris").value || 0;
-
-let espressoC =
-+document.getElementById("espressoCash").value || 0;
-
-let espressoRQ = espressoQ * 3000;
-let espressoRC = espressoC * 3000;
-
-document.getElementById("espressoCupQris").innerText =
-espressoQ;
-
-document.getElementById("espressoTotalQris").innerText =
-espressoRQ.toLocaleString("id-ID");
-
-document.getElementById("espressoCupCash").innerText =
-espressoC;
-
-document.getElementById("espressoTotalCash").innerText =
-espressoRC.toLocaleString("id-ID");
-
-document.getElementById("espressoGrand").innerText =
-(espressoRQ+espressoRC).toLocaleString("id-ID");
-
-// ===== GULA =====
-
-let gulaQ =
-+document.getElementById("gulaQris").value || 0;
-
-let gulaC =
-+document.getElementById("gulaCash").value || 0;
-
-let gulaRQ = gulaQ * 1000;
-let gulaRC = gulaC * 1000;
-
-document.getElementById("gulaCupQris").innerText =
-gulaQ;
-
-document.getElementById("gulaTotalQris").innerText =
-gulaRQ.toLocaleString("id-ID");
-
-document.getElementById("gulaCupCash").innerText =
-gulaC;
-
-document.getElementById("gulaTotalCash").innerText =
-gulaRC.toLocaleString("id-ID");
-
-document.getElementById("gulaGrand").innerText =
-(gulaRQ+gulaRC).toLocaleString("id-ID");
-
-// ===== SUMMARY =====
-
 sumCupQris.innerText=sumQ;
-
-sumRpQris.innerText=
-(sumRQ+espressoRQ+gulaRQ)
-.toLocaleString("id-ID");
-
+sumRpQris.innerText=sumRQ.toLocaleString("id-ID");
 sumCupCash.innerText=sumC;
+sumRpCash.innerText=sumRC.toLocaleString("id-ID");
+grandTotal.innerText=grand.toLocaleString("id-ID");
 
-sumRpCash.innerText=
-(sumRC+espressoRC+gulaRC)
-.toLocaleString("id-ID");
+let masuk=(+uangQris.value||0)+(+uangCash.value||0);
+let keluar=+pengeluaran.value||0;
+let minus=+minusCash.value||0;
+let cashOnly = (+uangCash.value||0) - keluar;
 
-grandTotal.innerText=
-(grand+espressoRQ+espressoRC+gulaRQ+gulaRC)
-.toLocaleString("id-ID");
-
-// ===== REKAP =====
-
-let masuk =
-(+uangQris.value||0)+
-(+uangCash.value||0)+
-espressoRQ+
-espressoRC+
-gulaRQ+
-gulaRC;
-
-let keluar =
-+pengeluaran.value||0;
-
-let minus =
-+minusCash.value||0;
-
-let cashOnly =
-(+uangCash.value||0)+
-espressoRC+
-gulaRC-
-keluar;
-
-totalMasuk.innerText=
-masuk.toLocaleString("id-ID");
-
-outRp.innerText=
-keluar.toLocaleString("id-ID");
-
-minusRp.innerText=
-minus.toLocaleString("id-ID");
-
-cashBersih.innerText=
-cashOnly.toLocaleString("id-ID");
-
-totalBersih.innerText=
-(masuk-keluar-minus)
-.toLocaleString("id-ID");
-
-saveLocal();
-
+totalMasuk.innerText=masuk.toLocaleString("id-ID");
+outRp.innerText=keluar.toLocaleString("id-ID");
+minusRp.innerText=minus.toLocaleString("id-ID");
+cashBersih.innerText=cashOnly.toLocaleString("id-ID");
+totalBersih.innerText=(masuk-keluar-minus).toLocaleString("id-ID");
 }
 
 document.addEventListener("input",hitung);
 
-// ===== SAVE =====
+// EXPORT PDF
+async function exportPDF(){
+  const { jsPDF } = window.jspdf;
+  const element = document.getElementById("laporan");
 
-function saveLocal(){
+  // aktifkan mode pdf
+  element.classList.add("pdf-mode");
+  await new Promise(r => setTimeout(r, 300));
 
-const data = {
+  const canvas = await html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+    windowWidth: element.scrollWidth
+  });
 
-tanggal:
-document.getElementById("tanggal").value,
+  const imgData = canvas.toDataURL("image/png");
 
-pic:
-document.getElementById("pic").value,
+  // 🔥 pakai landscape biar lebih lega
+  const pdf = new jsPDF("p", "mm", "a4");
 
-fulltime:
-document.getElementById("fulltime").checked,
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
 
-parttime:
-document.getElementById("parttime").checked,
+  // ukuran asli gambar
+  const imgWidth = canvas.width;
+  const imgHeight = canvas.height;
 
-uangQris:
-document.getElementById("uangQris").value,
+  // 🔥 hitung scale biar masuk 1 halaman
+  const ratio = Math.min(
+    pageWidth / imgWidth,
+    pageHeight / imgHeight
+  );
 
-uangCash:
-document.getElementById("uangCash").value,
+  const finalWidth = imgWidth * ratio;
+  const finalHeight = imgHeight * ratio;
 
-pengeluaran:
-document.getElementById("pengeluaran").value,
+  // center posisi
+  const x = (pageWidth - finalWidth) / 2;
+  const y = (pageHeight - finalHeight) / 2;
 
-ket:
-document.getElementById("ketPengeluaran").value,
+  pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
 
-minus:
-document.getElementById("minusCash").value,
+  element.classList.remove("pdf-mode");
 
-espressoQris:
-document.getElementById("espressoQris").value,
+  // nama file
+  const tanggalInput = document.getElementById("tanggal").value;
+  const picInput = document.getElementById("pic").value.trim();
 
-espressoCash:
-document.getElementById("espressoCash").value,
+  let namaFile = "Laporan_YeiCoffee";
 
-gulaQris:
-document.getElementById("gulaQris").value,
+  if (tanggalInput) {
+    const [year, month, day] = tanggalInput.split("-");
+    namaFile += `_${day}-${month}-${year}`;
+  }
 
-gulaCash:
-document.getElementById("gulaCash").value,
+  if (picInput) {
+    const picClean = picInput.replace(/[^a-zA-Z0-9]/g, "_");
+    namaFile += `_${picClean}`;
+  }
 
-table:[]
-};
-
-document.querySelectorAll("#mainTable tbody tr")
-.forEach(row=>{
-
-data.table.push({
-awal:row.children[2].innerText,
-rusak:row.children[3].innerText,
-qris:row.children[4].innerText,
-cash:row.children[5].innerText
-});
-
-});
-
-localStorage.setItem(
-"laporanYei",
-JSON.stringify(data)
-);
-
+  pdf.save(namaFile + ".pdf");
 }
 
-// ===== LOAD =====
 
-function loadLocal(){
+// EXPORT PNG
+async function exportPNG(){
+  const element = document.getElementById("laporan");
 
-const data = JSON.parse(
-localStorage.getItem("laporanYei") || "{}"
-);
+  // aktifkan mode PDF biar rapi & tanpa tombol
+  element.classList.add("pdf-mode");
 
-if(!data.table) return;
+  await new Promise(r => setTimeout(r, 300));
 
-document.getElementById("tanggal").value =
-data.tanggal || "";
+  const canvas = await html2canvas(element, {
+    scale: 3, // 🔥 makin besar makin HD
+    useCORS: true,
+    windowWidth: element.scrollWidth
+  });
 
-document.getElementById("pic").value =
-data.pic || "";
+  const link = document.createElement("a");
 
-document.getElementById("fulltime").checked =
-data.fulltime || false;
+  // nama file
+  const tanggalInput = document.getElementById("tanggal").value;
+  const picInput = document.getElementById("pic").value.trim();
 
-document.getElementById("parttime").checked =
-data.parttime || false;
+  let namaFile = "Laporan_YeiCoffee";
 
-document.getElementById("uangQris").value =
-data.uangQris || "";
+  if (tanggalInput) {
+    const [year, month, day] = tanggalInput.split("-");
+    namaFile += `_${day}-${month}-${year}`;
+  }
 
-document.getElementById("uangCash").value =
-data.uangCash || "";
+  if (picInput) {
+    const picClean = picInput.replace(/[^a-zA-Z0-9]/g, "_");
+    namaFile += `_${picClean}`;
+  }
 
-document.getElementById("pengeluaran").value =
-data.pengeluaran || "";
+  link.download = namaFile + ".png";
+  link.href = canvas.toDataURL("image/png");
 
-document.getElementById("ketPengeluaran").value =
-data.ket || "";
+  link.click();
 
-document.getElementById("minusCash").value =
-data.minus || "";
-
-document.getElementById("espressoQris").value =
-data.espressoQris || 0;
-
-document.getElementById("espressoCash").value =
-data.espressoCash || 0;
-
-document.getElementById("gulaQris").value =
-data.gulaQris || 0;
-
-document.getElementById("gulaCash").value =
-data.gulaCash || 0;
-
-const rows =
-document.querySelectorAll("#mainTable tbody tr");
-
-data.table.forEach((d,i)=>{
-
-if(rows[i]){
-
-rows[i].children[2].innerText =
-d.awal || "";
-
-rows[i].children[3].innerText =
-d.rusak || "";
-
-rows[i].children[4].innerText =
-d.qris || "";
-
-rows[i].children[5].innerText =
-d.cash || "";
-
+  // balikin normal
+  element.classList.remove("pdf-mode");
 }
 
-});
 
-hitung();
 
-}
 
-window.addEventListener("load",loadLocal);
-
-// ===== RESET =====
-
+// buka modal
 function resetAll(){
-document.getElementById("confirmModal").style.display="flex";
+  document.getElementById("confirmModal").style.display = "flex";
 }
 
+// tutup modal
 function closeModal(){
-document.getElementById("confirmModal").style.display="none";
+  document.getElementById("confirmModal").style.display = "none";
 }
 
+// aksi reset
 function confirmReset(){
-localStorage.removeItem("laporanYei");
-location.reload();
+  localStorage.removeItem("laporanYei");
+  location.reload();
 }
 
-// DUMMY EXPORT
-function exportPDF(){
-alert("Export PDF");
+
+// ===== AUTO SAVE LOCAL STORAGE =====
+function saveLocal(){
+  const data = {
+    tanggal: document.getElementById("tanggal").value,
+    pic: document.getElementById("pic").value,
+    fulltime: document.getElementById("fulltime").checked,
+    parttime: document.getElementById("parttime").checked,
+    uangQris: document.getElementById("uangQris").value,
+    uangCash: document.getElementById("uangCash").value,
+    pengeluaran: document.getElementById("pengeluaran").value,
+    ket: document.getElementById("ketPengeluaran").value,
+    minus: document.getElementById("minusCash").value,
+    table: []
+  };
+
+  document.querySelectorAll("#mainTable tbody tr").forEach(row=>{
+    data.table.push({
+      awal: row.children[2].innerText,
+      rusak: row.children[3].innerText,
+      qris: row.children[4].innerText,
+      cash: row.children[5].innerText
+    });
+  });
+
+  localStorage.setItem("laporanYei", JSON.stringify(data));
 }
 
-function exportPNG(){
-alert("Export PNG");
+// ===== LOAD DATA =====
+function loadLocal(){
+  const data = JSON.parse(localStorage.getItem("laporanYei") || "{}");
+
+  if(!data.table) return;
+
+  document.getElementById("tanggal").value = data.tanggal || "";
+  document.getElementById("pic").value = data.pic || "";
+  document.getElementById("fulltime").checked = data.fulltime || false;
+  document.getElementById("parttime").checked = data.parttime || false;
+  document.getElementById("uangQris").value = data.uangQris || "";
+  document.getElementById("uangCash").value = data.uangCash || "";
+  document.getElementById("pengeluaran").value = data.pengeluaran || "";
+  document.getElementById("ketPengeluaran").value = data.ket || "";
+  document.getElementById("minusCash").value = data.minus || "";
+
+  const rows = document.querySelectorAll("#mainTable tbody tr");
+
+  data.table.forEach((d,i)=>{
+    if(rows[i]){
+      rows[i].children[2].innerText = d.awal || "";
+      rows[i].children[3].innerText = d.rusak || "";
+      rows[i].children[4].innerText = d.qris || "";
+      rows[i].children[5].innerText = d.cash || "";
+    }
+  });
+
+  hitung();
 }
 
+// ===== AUTO TRIGGER =====
+document.addEventListener("input", saveLocal);
+document.addEventListener("change", saveLocal);
+
+// LOAD SAAT BUKA
+window.addEventListener("load", ()=>{
+  loadLocal();
+});
 </script>
 
 </body>
-</html>
+</html> 
