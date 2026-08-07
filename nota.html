@@ -1074,10 +1074,10 @@ function validateForm() {
 }
 
 
-function exportPDF() {
-    if (!validateForm()) return;
+    
 // EXPORT PDF
 async function exportPDF(){
+  if (!validateForm()) return;
   const { jsPDF } = window.jspdf;
   const element = document.getElementById("laporan");
 
@@ -1138,15 +1138,14 @@ async function exportPDF(){
 
   pdf.save(namaFile + ".pdf");
 }
-}
 
 
 
-function exportPNG() {
-    if (!validateForm()) return;
+
+
 // EXPORT PNG AUTO DOWNLOAD
 async function exportPNG(){
-
+if (!validateForm()) return;
   const element = document.getElementById("laporan");
 
   // aktifkan mode export
@@ -1204,7 +1203,7 @@ async function exportPNG(){
   // balikin normal
   element.classList.remove("pdf-mode");
 
-}}
+}
 
 </script>
 
