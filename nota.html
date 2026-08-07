@@ -1011,17 +1011,32 @@ function validateForm() {
     const parttime = document.getElementById('parttime').checked;
 
     if (!tanggal) {
-        alert('tanggal wajib diisi');
+        Swal.fire({
+            icon: 'warning',
+            title: 'tanggal belum diisi',
+            text: 'silakan pilih tanggal terlebih dahulu',
+            confirmButtonText: 'oke'
+        });
         return false;
     }
 
     if (!pic) {
-        alert('pic wajib diisi');
+        Swal.fire({
+            icon: 'warning',
+            title: 'pic belum diisi',
+            text: 'silakan isi nama pic terlebih dahulu',
+            confirmButtonText: 'oke'
+        });
         return false;
     }
 
     if (!fulltime && !parttime) {
-        alert('pilih full time atau part time');
+        Swal.fire({
+            icon: 'warning',
+            title: 'pilih jenis shift',
+            text: 'silakan pilih full time atau part time',
+            confirmButtonText: 'oke'
+        });
         return false;
     }
 
