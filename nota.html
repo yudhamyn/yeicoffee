@@ -1004,74 +1004,45 @@ location.reload();
 
 
 // validation eror required tanggal, pic, fulltime/parttime
-// function validateForm() {
-//     const tanggal = document.getElementById('tanggal').value;
-//     const pic = document.getElementById('pic').value.trim();
-//     const fulltime = document.getElementById('fulltime').checked;
-//     const parttime = document.getElementById('parttime').checked;
-
-//     if (!tanggal) {
-//         Swal.fire({
-//             icon: 'warning',
-//             title: 'tanggal belum diisi nyet',
-//             text: 'silakan pilih tanggal terlebih dahulu',
-//             confirmButtonText: 'oke'
-//         });
-//         return false;
-//     }
-
-//     if (!pic) {
-//         Swal.fire({
-//             icon: 'warning',
-//             title: 'pic belum diisi woy',
-//             text: 'silakan isi nama pic terlebih dahulu',
-//             confirmButtonText: 'oke'
-//         });
-//         return false;
-//     }
-
-//     if (!fulltime && !parttime) {
-//         Swal.fire({
-//             icon: 'warning',
-//             title: 'pilih jenis shift fulltime/partime dulu cokkkk',
-//             text: 'silakan pilih full time atau part time',
-//             confirmButtonText: 'oke'
-//         });
-//         return false;
-//     }
-
-//     return true;
-// }
-
 function validateForm() {
     const tanggal = document.getElementById('tanggal').value;
     const pic = document.getElementById('pic').value.trim();
     const fulltime = document.getElementById('fulltime').checked;
     const parttime = document.getElementById('parttime').checked;
 
-    console.log('tanggal:', tanggal);
-    console.log('pic:', pic);
-    console.log('fulltime:', fulltime);
-    console.log('parttime:', parttime);
-
     if (!tanggal) {
-        console.log('gagal tanggal');
+        Swal.fire({
+            icon: 'warning',
+            title: 'tanggal belum diisi nyet',
+            text: 'silakan pilih tanggal terlebih dahulu',
+            confirmButtonText: 'oke'
+        });
         return false;
     }
 
     if (!pic) {
-        console.log('gagal pic');
+        Swal.fire({
+            icon: 'warning',
+            title: 'pic belum diisi woy',
+            text: 'silakan isi nama pic terlebih dahulu',
+            confirmButtonText: 'oke'
+        });
         return false;
     }
 
     if (!fulltime && !parttime) {
-        console.log('gagal shift');
+        Swal.fire({
+            icon: 'warning',
+            title: 'pilih jenis shift fulltime/partime dulu cokkkk',
+            text: 'silakan pilih full time atau part time',
+            confirmButtonText: 'oke'
+        });
         return false;
     }
 
-    console.log('validasi sukses');
     return true;
 }
+
 
 
     
