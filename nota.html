@@ -611,6 +611,13 @@ onclick="window.location.href='index.html'">
 🚀 back to rekap awal
 </button>
 
+<button
+class="no-print"
+onclick="syncFromIndexRekap(true)"
+style="background:#0288d1; color:white;">
+🔄 Sinkron dari Rekap Kasir
+</button>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -625,6 +632,7 @@ const menuHarga = {
 "Matcha":13000,
 "Choco Hazel":13000,
 "Americano":8000,
+"Thai Tea":13000,
 "Spanish Latte":12000,
 "Butterscotch Latte":15000
 };
@@ -985,7 +993,90 @@ hitung();
 
 }
 
-window.addEventListener("load",loadLocal);
+window.addEventListener("load", () => {
+  loadLocal();
+  syncFromIndexRekap(false);
+});
+
+// Sinkron otomatis jika ada perubahan transaksi di index.html
+window.addEventListener("storage", (e) => {
+  if (e.key === "dataRekap" || e.key === "pengeluaran") {
+    syncFromIndexRekap(false);
+  }
+});
+
+// ===== SINKRON DARI REKAP KASIR (index.html) =====
+function syncFromIndexRekap(showNotification = false) {
+  const dataRekap = JSON.parse(localStorage.getItem("dataRekap") || "[]");
+  const pengeluaran = JSON.parse(localStorage.getItem("pengeluaran") || "[]");
+
+  if (dataRekap.length === 0 && pengeluaran.length === 0) {
+    if (showNotification) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Belum Ada Data Rekap',
+        text: 'Tidak ada data transaksi di Rekap Kasir (index.html).',
+        confirmButtonColor: '#5a87b5'
+      });
+    }
+    return;
+  }
+
+  let totalCupsSync = 0;
+  const rows = document.querySelectorAll("#mainTable tbody tr");
+
+  // 1. Sinkronkan jumlah cup QRIS & Cash per menu
+  rows.forEach(row => {
+    const menuName = row.children[1].innerText.trim();
+    const item = dataRekap.find(x => x.menu && x.menu.trim().toLowerCase() === menuName.toLowerCase());
+    if (item) {
+      row.children[4].innerText = item.jumlahQris || 0;
+      row.children[5].innerText = item.jumlahCash || 0;
+      totalCupsSync += (item.jumlahQris || 0) + (item.jumlahCash || 0);
+    }
+  });
+
+  // 2. Sinkronkan Espresso jika ada
+  const esp = dataRekap.find(x => x.menu && x.menu.trim().toLowerCase() === "espresso");
+  if (esp) {
+    document.getElementById("espressoQris").value = esp.jumlahQris || 0;
+    document.getElementById("espressoCash").value = esp.jumlahCash || 0;
+    totalCupsSync += (esp.jumlahQris || 0) + (esp.jumlahCash || 0);
+  }
+
+  // 3. Sinkronkan Total Nominal Uang QRIS & Cash
+  let sumCash = 0;
+  let sumQris = 0;
+  dataRekap.forEach(r => {
+    sumCash += (r.totalCash || 0);
+    sumQris += (r.totalQris || 0);
+  });
+
+  if (dataRekap.length > 0) {
+    document.getElementById("uangCash").value = sumCash;
+    document.getElementById("uangQris").value = sumQris;
+  }
+
+  // 4. Sinkronkan Pengeluaran
+  if (pengeluaran && pengeluaran.length > 0) {
+    const sumKeluar = pengeluaran.reduce((acc, curr) => acc + (curr.jumlah || 0), 0);
+    document.getElementById("pengeluaran").value = sumKeluar;
+    document.getElementById("ketPengeluaran").value = pengeluaran.map(p => p.nama).join(", ");
+  }
+
+  // 5. Jalankan kalkulasi rekap nota
+  hitung();
+
+  if (showNotification) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Sinkronisasi Berhasil!',
+      text: `${totalCupsSync} cup & keuangan dari Rekap Kasir otomatis disesuaikan.`,
+      timer: 2000,
+      showConfirmButton: false
+    });
+  }
+}
 
 // ===== RESET =====
 
