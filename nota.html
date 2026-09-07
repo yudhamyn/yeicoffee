@@ -6,6 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laporan Harian - Yei Coffee</title>
 
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root {
   --primary:#5a87b5;
@@ -114,57 +119,172 @@ tfoot td {
 }
 
 .rekap-uang {
-  margin-top:20px;
-  padding:20px;
-  border-radius:16px;
-  background:linear-gradient(135deg,#fff8e1,#ffe0b2);
-  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  margin-top: 20px;
+  padding: 22px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fffdf8 0%, #fffbf0 45%, #fef3c7 100%);
+  border: 1.5px solid #fde68a;
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.rekap-header-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(217, 119, 6, 0.18);
+}
+
+.rekap-title-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15);
+}
+
+.rekap-uang h3 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #78350f;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.rekap-subtitle {
+  font-size: 11.5px;
+  color: #92400e;
+  font-weight: 600;
+  margin-top: 2px;
 }
 
 .rekap-grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
 .rekap-item {
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rekap-item.full-width {
+  grid-column: 1 / -1;
 }
 
 .rekap-item label {
-  font-size:20px;
-  color:#555;
-  margin-bottom:3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #78350f;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .rekap-item input {
-  padding:10px;
-  border-radius:8px;
-  border:1px solid #ccc;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #fed7aa;
+  background: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.rekap-item input:focus {
+  background: #ffffff;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22);
+}
+
+.rekap-item input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 13.5px;
 }
 
 .rekap-summary {
-  margin-top:15px;
-  background:white;
-  padding:15px;
-  border-radius:12px;
+  margin-top: 16px;
+  background: #ffffff;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
 }
 
-.rekap-summary p {
-  display:flex;
-  justify-content:space-between;
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13.5px;
+  color: #475569;
+  font-weight: 600;
 }
 
-.total-bersih {
-  font-size:20px;
-  font-weight:bold;
-  color:#2e7d32;
+.summary-row b {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #1e293b;
 }
 
 #cashBersih {
-  color:#1565c0;
-  font-weight:bold;
+  color: #1565c0 !important;
+  font-weight: 800;
+  font-size: 15.5px;
+}
+
+.rekap-summary hr {
+  border: none;
+  border-top: 1px dashed #cbd5e1;
+  margin: 10px 0;
+}
+
+.total-bersih-box {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1.5px solid #86efac;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.total-bersih-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #166534;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.total-bersih-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  color: #15803d;
+  letter-spacing: -0.02em;
 }
 
 button {
@@ -210,6 +330,11 @@ button {
 
 .pdf-mode .no-print {
   display:none !important;
+}
+
+.pdf-mode input::placeholder {
+  color: transparent !important;
+  opacity: 0 !important;
 }
 
 .modal {
@@ -285,58 +410,113 @@ button {
 
 
 /* ===== SIMPLE ADDON STYLE ===== */
-.addon-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-  margin-top:10px;
+.addon-header {
+  margin-top: 18px;
+  margin-bottom: 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #78350f;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.addon-card{
-  padding:14px;
-  border-radius:16px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.08);
-  background:white;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  transition:0.2s;
+.addon-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
 }
 
-.addon-card:hover{
-  transform:translateY(-2px);
+.addon-card {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
-.addon-card .title{
-  font-weight:700;
-  font-size:14px;
+.addon-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }
 
-.addon-card .sub{
-  font-size:12px;
-  opacity:0.6;
+.addon-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: #ede9fe;
+  color: #6d28d9;
+  letter-spacing: 0.03em;
+  margin-bottom: 2px;
 }
 
-.addon-card input{
-  padding:10px;
-  border-radius:10px;
-  border:1px solid #ddd;
-  font-size:16px;
-  font-weight:bold;
+.addon-badge.green {
+  background: #dcfce7;
+  color: #15803d;
 }
 
-.addon-card.purple{
-  border-left:5px solid #7b61ff;
-  background:#f7f4ff;
+.addon-card .title {
+  font-weight: 700;
+  font-size: 13px;
+  color: #1e293b;
+  line-height: 1.2;
 }
 
-.addon-card.green{
-  border-left:5px solid #22c55e;
-  background:#f3fff6;
+.addon-card .sub {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.addon-card input {
+  margin-top: 4px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  text-align: center;
+  color: #0f172a;
+  outline: none;
+  transition: all 0.15s;
+}
+
+.addon-card input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.addon-card.purple {
+  border-left: 4px solid #7b61ff;
+  border-top: 1px solid #e0e7ff;
+  border-right: 1px solid #e0e7ff;
+  border-bottom: 1px solid #e0e7ff;
+}
+
+.addon-card.green {
+  border-left: 4px solid #22c55e;
+  border-top: 1px solid #dcfce7;
+  border-right: 1px solid #dcfce7;
+  border-bottom: 1px solid #dcfce7;
 }
 
 @media(max-width:768px){
   .addon-grid{
+    grid-template-columns:1fr;
+  }
+  .rekap-grid {
     grid-template-columns:1fr;
   }
 }
@@ -511,63 +691,75 @@ Rekap Cup
 
 <div class="rekap-uang">
 
-<h3>Rekap Uang</h3>
+<div class="rekap-header-bar">
+  <div class="rekap-title-icon">💵</div>
+  <div>
+    <h3>Rekap Kas & Keuangan</h3>
+    <div class="rekap-subtitle">Ringkasan transaksi tunai, digital & pengeluaran shift</div>
+  </div>
+</div>
 
 <!-- INPUT UTAMA -->
 <div class="rekap-grid">
 
   <div class="rekap-item">
-    <label>Total QRIS (Rp)</label>
-    <input type="number" id="uangQris">
+    <label><span>📱</span> Total QRIS (Rp)</label>
+    <input type="number" id="uangQris" placeholder="0">
   </div>
 
   <div class="rekap-item">
-    <label>Total Cash (Rp)</label>
-    <input type="number" id="uangCash">
+    <label><span>💵</span> Total Cash (Rp)</label>
+    <input type="number" id="uangCash" placeholder="0">
   </div>
 
   <div class="rekap-item">
-    <label>Pengeluaran (Rp)</label>
-    <input type="number" id="pengeluaran">
+    <label><span>💸</span> Pengeluaran (Rp)</label>
+    <input type="number" id="pengeluaran" placeholder="0">
   </div>
 
   <div class="rekap-item">
-    <label>Keterangan</label>
-    <input type="text" id="ketPengeluaran">
+    <label><span>📝</span> Keterangan</label>
+    <input type="text" id="ketPengeluaran" placeholder="Keterangan pengeluaran...">
   </div>
 
-  <div class="rekap-item">
-    <label>Minus Cash (Rp)</label>
-    <input type="number" id="minusCash">
+  <div class="rekap-item full-width">
+    <label><span>⚠️</span> Minus Cash (Rp)</label>
+    <input type="number" id="minusCash" placeholder="0">
   </div>
 
 </div>
 
 <!-- ADDON SECTION -->
-<h4 style="margin-top:20px;">Add On</h4>
+<div class="addon-header">
+  <span>☕</span> Pesanan Tambahan (Add On)
+</div>
 
 <div class="addon-grid">
 
   <div class="addon-card purple">
-    <div class="title">Espresso QRIS</div>
+    <div class="addon-badge">📱 QRIS</div>
+    <div class="title">Espresso</div>
     <div class="sub">(x3000)</div>
     <input type="number" id="espressoQris" value="0">
   </div>
 
   <div class="addon-card green">
-    <div class="title">Espresso Cash</div>
+    <div class="addon-badge green">💵 Cash</div>
+    <div class="title">Espresso</div>
     <div class="sub">(x3000)</div>
     <input type="number" id="espressoCash" value="0">
   </div>
 
   <div class="addon-card purple">
-    <div class="title">Add On Gula QRIS</div>
+    <div class="addon-badge">📱 QRIS</div>
+    <div class="title">Add On Gula</div>
     <div class="sub">(x1000)</div>
     <input type="number" id="gulaQris" value="0">
   </div>
 
   <div class="addon-card green">
-    <div class="title">Add On Gula Cash</div>
+    <div class="addon-badge green">💵 Cash</div>
+    <div class="title">Add On Gula</div>
     <div class="sub">(x1000)</div>
     <input type="number" id="gulaCash" value="0">
   </div>
@@ -577,17 +769,36 @@ Rekap Cup
 
 <div class="rekap-summary">
 
-<p>Total Masuk <b id="totalMasuk">0</b></p>
-<p>Pengeluaran <b id="outRp">0</b></p>
-<p>Cash - Pengeluaran <b id="cashBersih">0</b></p>
-<p>Minus <b id="minusRp">0</b></p>
+<div class="summary-row">
+  <span>Total Uang Masuk</span>
+  <b id="totalMasuk">0</b>
+</div>
+
+<div class="summary-row">
+  <span>Pengeluaran</span>
+  <b id="outRp" style="color:#e53935;">0</b>
+</div>
+
+<div class="summary-row">
+  <span>Cash - Pengeluaran</span>
+  <b id="cashBersih">0</b>
+</div>
+
+<div class="summary-row">
+  <span>Minus</span>
+  <b id="minusRp" style="color:#e53935;">0</b>
+</div>
 
 <hr>
 
-<p class="total-bersih">
-Total Bersih
-<span id="totalBersih">0</span>
-</p>
+<div class="total-bersih-box">
+  <div class="total-bersih-label">
+    <span>✨</span> Total Bersih
+  </div>
+  <div class="total-bersih-val">
+    <span id="totalBersih">0</span>
+  </div>
+</div>
 
 </div>
 
@@ -1143,128 +1354,151 @@ async function exportPDF(){
   const { jsPDF } = window.jspdf;
   const element = document.getElementById("laporan");
 
+  // Sembunyikan placeholder (termasuk keterangan) agar tidak ikut terexport
+  const inputsWithPlaceholder = element.querySelectorAll("input[placeholder]");
+  const savedPlaceholders = [];
+  inputsWithPlaceholder.forEach(inp => {
+    savedPlaceholders.push({ el: inp, val: inp.getAttribute("placeholder") });
+    inp.removeAttribute("placeholder");
+  });
+
   // aktifkan mode pdf
   element.classList.add("pdf-mode");
   await new Promise(r => setTimeout(r, 300));
 
-  const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    windowWidth: element.scrollWidth
-  });
+  try {
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      windowWidth: element.scrollWidth
+    });
 
-  const imgData = canvas.toDataURL("image/png");
+    const imgData = canvas.toDataURL("image/png");
 
-  // 🔥 pakai landscape biar lebih lega
-  const pdf = new jsPDF("p", "mm", "a4");
+    // 🔥 pakai landscape biar lebih lega
+    const pdf = new jsPDF("p", "mm", "a4");
 
-  const pageWidth = pdf.internal.pageSize.getWidth();
-  const pageHeight = pdf.internal.pageSize.getHeight();
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // ukuran asli gambar
-  const imgWidth = canvas.width;
-  const imgHeight = canvas.height;
+    // ukuran asli gambar
+    const imgWidth = canvas.width;
+    const imgHeight = canvas.height;
 
-  // 🔥 hitung scale biar masuk 1 halaman
-  const ratio = Math.min(
-    pageWidth / imgWidth,
-    pageHeight / imgHeight
-  );
+    // 🔥 hitung scale biar masuk 1 halaman
+    const ratio = Math.min(
+      pageWidth / imgWidth,
+      pageHeight / imgHeight
+    );
 
-  const finalWidth = imgWidth * ratio;
-  const finalHeight = imgHeight * ratio;
+    const finalWidth = imgWidth * ratio;
+    const finalHeight = imgHeight * ratio;
 
-  // center posisi
-  const x = (pageWidth - finalWidth) / 2;
-  const y = (pageHeight - finalHeight) / 2;
+    // center posisi
+    const x = (pageWidth - finalWidth) / 2;
+    const y = (pageHeight - finalHeight) / 2;
 
-  pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
+    pdf.addImage(imgData, "PNG", x, y, finalWidth, finalHeight);
 
-  element.classList.remove("pdf-mode");
+    // nama file
+    const tanggalInput = document.getElementById("tanggal").value;
+    const picInput = document.getElementById("pic").value.trim();
 
-  // nama file
-  const tanggalInput = document.getElementById("tanggal").value;
-  const picInput = document.getElementById("pic").value.trim();
+    let namaFile = "Laporan_YeiCoffee";
 
-  let namaFile = "Laporan_YeiCoffee";
+    if (tanggalInput) {
+      const [year, month, day] = tanggalInput.split("-");
+      namaFile += `_${day}-${month}-${year}`;
+    }
 
-  if (tanggalInput) {
-    const [year, month, day] = tanggalInput.split("-");
-    namaFile += `_${day}-${month}-${year}`;
+    if (picInput) {
+      const picClean = picInput.replace(/[^a-zA-Z0-9]/g, "_");
+      namaFile += `_${picClean}`;
+    }
+
+    pdf.save(namaFile + ".pdf");
+  } finally {
+    element.classList.remove("pdf-mode");
+    // Kembalikan placeholder semula
+    savedPlaceholders.forEach(item => {
+      item.el.setAttribute("placeholder", item.val);
+    });
   }
-
-  if (picInput) {
-    const picClean = picInput.replace(/[^a-zA-Z0-9]/g, "_");
-    namaFile += `_${picClean}`;
-  }
-
-  pdf.save(namaFile + ".pdf");
 }
-
-
-
-
 
 // EXPORT PNG AUTO DOWNLOAD
 async function exportPNG(){
-if (!validateForm()) return;
+  if (!validateForm()) return;
   const element = document.getElementById("laporan");
+
+  // Sembunyikan placeholder (termasuk keterangan) agar tidak ikut terexport
+  const inputsWithPlaceholder = element.querySelectorAll("input[placeholder]");
+  const savedPlaceholders = [];
+  inputsWithPlaceholder.forEach(inp => {
+    savedPlaceholders.push({ el: inp, val: inp.getAttribute("placeholder") });
+    inp.removeAttribute("placeholder");
+  });
 
   // aktifkan mode export
   element.classList.add("pdf-mode");
 
   await new Promise(r => setTimeout(r, 200));
 
-  const canvas = await html2canvas(element,{
-    scale:3,
-    useCORS:true,
-    backgroundColor:"#ffffff",
-    windowWidth:element.scrollWidth
-  });
+  try {
+    const canvas = await html2canvas(element,{
+      scale:3,
+      useCORS:true,
+      backgroundColor:"#ffffff",
+      windowWidth:element.scrollWidth
+    });
 
-  // nama file
-  const tanggalInput =
-  document.getElementById("tanggal").value;
+    // nama file
+    const tanggalInput =
+    document.getElementById("tanggal").value;
 
-  const picInput =
-  document.getElementById("pic").value.trim();
+    const picInput =
+    document.getElementById("pic").value.trim();
 
-  let namaFile = "Laporan_YeiCoffee";
+    let namaFile = "Laporan_YeiCoffee";
 
-  if(tanggalInput){
-    const [year,month,day] =
-    tanggalInput.split("-");
+    if(tanggalInput){
+      const [year,month,day] =
+      tanggalInput.split("-");
 
-    namaFile += `_${day}-${month}-${year}`;
+      namaFile += `_${day}-${month}-${year}`;
+    }
+
+    if(picInput){
+      namaFile +=
+      `_${picInput.replace(/[^a-zA-Z0-9]/g,"_")}`;
+    }
+
+    // convert ke blob biar auto download
+    canvas.toBlob((blob)=>{
+
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+
+      a.href = url;
+      a.download = namaFile + ".png";
+
+      // auto trigger download
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+
+    },"image/png");
+  } finally {
+    // balikin normal
+    element.classList.remove("pdf-mode");
+    // Kembalikan placeholder semula
+    savedPlaceholders.forEach(item => {
+      item.el.setAttribute("placeholder", item.val);
+    });
   }
-
-  if(picInput){
-    namaFile +=
-    `_${picInput.replace(/[^a-zA-Z0-9]/g,"_")}`;
-  }
-
-  // convert ke blob biar auto download
-  canvas.toBlob((blob)=>{
-
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-
-    a.href = url;
-    a.download = namaFile + ".png";
-
-    // auto trigger download
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    URL.revokeObjectURL(url);
-
-  },"image/png");
-
-  // balikin normal
-  element.classList.remove("pdf-mode");
-
 }
 
 </script>

@@ -1,289 +1,1324 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Kalkulator Pembelian & Hitung Kembalian Kasir Yei Coffee - Cepat, Akurat, dan Interaktif.">
   <title>Kalkulator Pembelian - Yei Coffee</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background: #fff8ef;
-      color: #4a2c18;
-      text-align: center;
+    :root {
+      /* Brand Color Palette */
+      --coffee-900: #1f120c;
+      --coffee-800: #2e1a11;
+      --coffee-700: #422518;
+      --coffee-600: #5c3422;
+      --coffee-500: #7b462d;
+      --coffee-400: #a1623f;
+      --coffee-300: #c98b62;
+      --coffee-200: #e8bd9b;
+      --coffee-100: #f5dfcb;
+      --coffee-50: #fbf6f0;
+
+      --amber-500: #d97706;
+      --amber-400: #f59e0b;
+      --amber-100: #fef3c7;
+
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --emerald-50: #ecfdf5;
+
+      --indigo-600: #4f46e5;
+      --indigo-500: #6366f1;
+      --indigo-100: #e0e7ff;
+
+      --rose-600: #e11d48;
+      --rose-500: #f43f5e;
+      --rose-100: #ffe4e6;
+      --rose-50: #fff1f2;
+
+      --bg-canvas: #f8f5f0;
+      --surface-card: rgba(255, 255, 255, 0.98);
+      --surface-subtle: #fbf9f6;
+      --border-color: rgba(66, 37, 24, 0.12);
+
+      --text-main: #231710;
+      --text-muted: #6e5e54;
+      --text-subtle: #9c8b80;
+
+      --shadow-sm: 0 1px 3px rgba(35, 23, 16, 0.05);
+      --shadow-md: 0 4px 12px -2px rgba(35, 23, 16, 0.08), 0 2px 6px -1px rgba(35, 23, 16, 0.04);
+      --shadow-lg: 0 12px 24px -4px rgba(35, 23, 16, 0.12);
+      --shadow-xl: 0 20px 32px -6px rgba(35, 23, 16, 0.16);
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 10px;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
-    h1 {
-      margin-top: 10px;
-      font-size: 1.5em;
-      color: #4a2c18;
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      background: var(--bg-canvas);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(201, 139, 98, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(123, 70, 45, 0.08) 0px, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 16px;
+      line-height: 1.5;
     }
+
+    .calc-container {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ================= HEADER & NAV ================= */
+    .app-header {
+      background: var(--surface-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 14px 22px;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-badge {
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, var(--coffee-800), var(--coffee-600));
+      color: #fff;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(66, 37, 24, 0.25);
+    }
+
+    .brand-logo-badge svg {
+      width: 24px;
+      height: 24px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .brand-info h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--coffee-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-info h1 span.tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: var(--amber-100);
+      color: var(--amber-500);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .brand-info p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .header-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--text-main);
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      background: #fff;
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+      border-color: var(--coffee-300);
+      color: var(--coffee-800);
+    }
+
+    .nav-btn.active {
+      background: var(--coffee-800);
+      color: #fff;
+      border-color: var(--coffee-800);
+      box-shadow: 0 2px 8px rgba(46, 26, 17, 0.3);
+    }
+
+    /* ================= MAIN SPLIT WORKSPACE ================= */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card-panel {
+      background: var(--surface-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .panel-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--coffee-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Category Filter */
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .filter-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-chip:hover {
+      background: #fff;
+      color: var(--coffee-800);
+      border-color: var(--coffee-300);
+    }
+
+    .filter-chip.active {
+      background: var(--coffee-800);
+      color: #fff;
+      border-color: var(--coffee-800);
+    }
+
+    /* Menu Grid */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 10px;
-      margin: 15px 0;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
+
+    .menu-grid::-webkit-scrollbar,
+    .table-responsive::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .menu-grid::-webkit-scrollbar-thumb,
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: rgba(66, 37, 24, 0.15);
+      border-radius: 4px;
+    }
+
     .menu-btn {
-      background: #8b5e3c;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 15px 8px;
-      font-size: 1em;
+      background: #fff;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       cursor: pointer;
-      transition: 0.2s;
-      font-weight: 600;
+      position: relative;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      user-select: none;
     }
+
     .menu-btn:hover {
-      background: #6f4225;
-      transform: scale(1.03);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--coffee-400);
     }
+
+    .menu-btn:active {
+      transform: scale(0.97);
+    }
+
+    .menu-btn-icon {
+      font-size: 1.8rem;
+      margin-bottom: 4px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .menu-btn-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--coffee-900);
+      line-height: 1.25;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-btn-price {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--coffee-600);
+      background: var(--coffee-50);
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      border: 1px solid rgba(161, 98, 63, 0.18);
+      margin-top: 4px;
+    }
+
+    .menu-cart-count {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: var(--amber-400);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      box-shadow: 0 2px 4px rgba(217, 119, 6, 0.3);
+    }
+
+    /* ================= CART & BILL SECTION ================= */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      background: #fff;
+    }
+
     table {
       width: 100%;
-      max-width: 600px;
-      margin: 10px auto;
       border-collapse: collapse;
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
+      font-size: 0.85rem;
       text-align: center;
-      font-size: 0.9em;
     }
+
     th {
-      background: #ffeaa7;
+      background: var(--surface-subtle);
+      color: var(--coffee-800);
+      font-weight: 700;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
     }
-    .total-box {
-      margin-top: 15px;
-      background: #fff3cd;
-      padding: 15px;
-      border-radius: 10px;
-      display: inline-block;
-      min-width: 280px;
+
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(66, 37, 24, 0.06);
+      color: var(--text-main);
       font-weight: 600;
+      vertical-align: middle;
     }
-    input[type="number"], .input-money {
-      padding: 10px;
-      width: 80%;
-      max-width: 250px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      text-align: center;
-      font-size: 1em;
+
+    tbody tr:hover {
+      background: rgba(201, 139, 98, 0.04);
     }
-    .btn {
-      background: #8b5e3c;
-      color: #fff;
+
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--coffee-50);
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-color);
+    }
+
+    .step-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
       border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
+      background: #fff;
+      color: var(--coffee-800);
+      font-weight: 800;
+      font-size: 0.8rem;
       cursor: pointer;
-      margin: 8px;
-      font-weight: 600;
-      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.12s;
     }
+
+    .step-btn:hover {
+      background: var(--coffee-800);
+      color: #fff;
+    }
+
+    .btn-row-delete {
+      background: transparent;
+      border: none;
+      color: var(--text-subtle);
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .btn-row-delete:hover {
+      background: var(--rose-50);
+      color: var(--rose-600);
+    }
+
+    .empty-cart-state {
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .empty-cart-icon {
+      font-size: 2.2rem;
+      margin-bottom: 6px;
+      opacity: 0.6;
+    }
+
+    /* ================= TOTAL & CHANGE CALCULATOR BOX ================= */
+    .total-box {
+      margin-top: 18px;
+      background: linear-gradient(145deg, #fffdf8 0%, #fffbf0 45%, #fef3c7 100%);
+      border: 1.5px solid #fde68a;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(217, 119, 6, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .bill-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .bill-label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--coffee-800);
+    }
+
+    .bill-value-grand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--coffee-900);
+      letter-spacing: -0.02em;
+    }
+
+    .cash-input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-money {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid #fed7aa;
+      background: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--coffee-900);
+      outline: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .input-money:focus {
+      border-color: var(--amber-500);
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22);
+    }
+
+    .input-money::placeholder {
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    /* Quick Cash Presets */
+    .cash-presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .preset-chip {
+      background: #fff;
+      border: 1px solid #fde68a;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--coffee-800);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .preset-chip:hover {
+      background: var(--amber-400);
+      border-color: var(--amber-400);
+      color: #fff;
+    }
+
+    /* Change / Kembalian Banner */
+    .change-banner {
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1.5px solid #86efac;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      transition: all 0.2s ease;
+    }
+
+    .change-banner.deficit {
+      border-color: #fca5a5;
+      background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+    }
+
+    .change-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--emerald-600);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .change-banner.deficit .change-label {
+      color: var(--rose-600);
+    }
+
+    .change-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--emerald-600);
+      letter-spacing: -0.02em;
+    }
+
+    .change-banner.deficit .change-val {
+      color: var(--rose-600);
+    }
+
+    /* Bottom Actions */
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .btn {
+      flex: 1 1 140px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-sm);
+    }
+
     .btn:hover {
-      background: #6f4225;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
-    /* Popup keypad */
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-reset {
+      background: var(--rose-600);
+      color: #fff;
+    }
+
+    .btn-reset:hover {
+      background: var(--rose-500);
+    }
+
+    .btn-back {
+      background: var(--coffee-800);
+      color: #fff;
+    }
+
+    .btn-back:hover {
+      background: var(--coffee-700);
+    }
+
+    /* ================= KEYPAD POPUP ================= */
     .popup {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(31, 18, 12, 0.6);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
       display: none;
       align-items: center;
       justify-content: center;
+      padding: 16px;
     }
+
     .popup-content {
       background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      width: 90%;
-      max-width: 300px;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 340px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transform: scale(0.96);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
+
+    .popup.show .popup-content {
+      transform: scale(1);
+    }
+
+    .popup-header {
+      background: linear-gradient(135deg, var(--coffee-900), var(--coffee-700));
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .popup-header h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .popup-close-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .popup-body {
+      padding: 18px;
+    }
+
+    .qty-preview-card {
+      background: var(--coffee-50);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    #jumlahInput {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--coffee-900);
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: center;
+      outline: none;
+    }
+
+    .popup-subtotal-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .popup-subtotal-text b {
+      color: var(--coffee-700);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* Keypad Quick Chips */
+    .quick-chips {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .q-chip {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--coffee-800);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+
+    .q-chip:hover {
+      background: var(--coffee-100);
+    }
+
     .keypad {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 10px;
+      gap: 8px;
     }
+
     .key {
-      background: #8b5e3c;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 15px;
-      font-size: 1.2em;
-      font-weight: bold;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--coffee-900);
       cursor: pointer;
-      transition: 0.2s;
+      transition: all 0.12s ease;
+      user-select: none;
     }
+
     .key:hover {
-      background: #6f4225;
+      background: #fff;
+      border-color: var(--coffee-300);
+      transform: translateY(-1px);
     }
-    #jumlahInput {
-      font-size: 1.3em;
-      font-weight: bold;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 8px;
-      width: 80%;
-      text-align: center;
+
+    .key:active {
+      background: var(--coffee-100);
+      transform: scale(0.96);
     }
+
+    .key.action-clear {
+      background: var(--rose-50);
+      color: var(--rose-600);
+      border-color: var(--rose-100);
+    }
+
+    .key.action-ok {
+      background: var(--emerald-500);
+      color: #fff;
+      border-color: var(--emerald-600);
+      grid-column: span 3;
+      padding: 13px;
+      font-size: 0.95rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+    }
+
+    .key.action-ok:hover {
+      background: var(--emerald-600);
+    }
+
     @media (max-width: 600px) {
-      h1 { font-size: 1.3em; }
-      .menu-btn { font-size: 0.9em; padding: 12px; }
-      .btn { font-size: 0.8em; padding: 8px 12px; }
+      body {
+        padding: 10px;
+      }
+      .app-header {
+        padding: 12px;
+      }
+      .brand-info h1 {
+        font-size: 1.2rem;
+      }
+      .header-nav {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .nav-btn {
+        flex: 1 1 45%;
+        justify-content: center;
+      }
+      .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      }
+      .bill-value-grand {
+        font-size: 1.3rem;
+      }
+      .change-val {
+        font-size: 1.25rem;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>Kalkulator Pembelian - Yei Coffee</h1>
 
-  <div class="menu-grid" id="menuButtons"></div>
+  <div class="calc-container">
 
-  <table id="pembelianTable">
-    <thead>
-      <tr><th>No</th><th>Menu</th><th>Harga</th><th>Jumlah</th><th>Subtotal</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+    <!-- ================= HEADER & NAV ================= -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo-badge">
+          <!-- Coffee Cup SVG -->
+          <svg viewBox="0 0 24 24">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+            <line x1="6" y1="1" x2="6" y2="4" />
+            <line x1="10" y1="1" x2="10" y2="4" />
+            <line x1="14" y1="1" x2="14" y2="4" />
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>YEI COFFEE <span class="tag">Kalkulator</span></h1>
+          <p>Kalkulator Pembelian & Hitung Kembalian Kasir</p>
+        </div>
+      </div>
 
-  <div class="total-box">
-    <p><b>Total Belanja:</b> <span id="totalBelanja">Rp 0</span></p>
-    <p>
-      <label>Uang Diterima:</label><br/>
-      <input type="number" class="input-money" id="uangDiterima" placeholder="Masukkan jumlah uang..." oninput="hitungKembalian()" />
-    </p>
-    <p><b>Kembalian:</b> <span id="kembalian">Rp 0</span></p>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-btn">
+          <span>☕</span> POS Kasir
+        </a>
+        <a href="nota.html" class="nav-btn">
+          <span>📋</span> Rekap Nota
+        </a>
+        <a href="kalkulator.html" class="nav-btn active">
+          <span>🧮</span> Kalkulator
+        </a>
+        <a href="loyaltymember.html" class="nav-btn">
+          <span>💳</span> Member
+        </a>
+        <a href="loyaltyadmin.html" class="nav-btn">
+          <span>⚙️</span> Admin Member
+        </a>
+      </nav>
+    </header>
+
+    <!-- ================= MAIN SPLIT WORKSPACE ================= -->
+    <div class="workspace-grid">
+
+      <!-- LEFT: MENU SELECTION CATALOG -->
+      <section class="card-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>☕</span> Pilih Menu Minuman
+          </div>
+          <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">Klik untuk tambah</span>
+        </div>
+
+        <!-- Filter Pills -->
+        <div class="filter-pills" id="categoryFilterBar">
+          <button class="filter-chip active" onclick="filterCategory('all', this)">Semua Menu</button>
+          <button class="filter-chip" onclick="filterCategory('coffee', this)">Coffee</button>
+          <button class="filter-chip" onclick="filterCategory('non-coffee', this)">Non-Coffee</button>
+          <button class="filter-chip" onclick="filterCategory('signature', this)">Signature</button>
+        </div>
+
+        <!-- Menu Buttons Grid -->
+        <div class="menu-grid" id="menuButtons"></div>
+      </section>
+
+      <!-- RIGHT: ORDER CART & CHANGE CALCULATOR -->
+      <section class="card-panel" style="display:flex; flex-direction:column; gap:16px;">
+        <div class="panel-header" style="margin-bottom:4px;">
+          <div class="panel-title">
+            <span>🧾</span> Rincian Pesanan
+          </div>
+          <span id="cartCountBadge" style="font-size:0.75rem; font-weight:700; color:var(--coffee-700); background:var(--coffee-100); padding:2px 8px; border-radius:var(--radius-full);">0 Item</span>
+        </div>
+
+        <!-- Order Table -->
+        <div class="table-responsive">
+          <table id="pembelianTable">
+            <thead>
+              <tr>
+                <th style="width:36px;">No</th>
+                <th style="text-align:left;">Menu</th>
+                <th style="text-align:right;">Harga</th>
+                <th style="text-align:center;">Jumlah</th>
+                <th style="text-align:right;">Subtotal</th>
+                <th style="width:36px;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Total Belanja & Kembalian Box -->
+        <div class="total-box">
+          <div class="bill-row">
+            <span class="bill-label">Total Belanja:</span>
+            <span class="bill-value-grand" id="totalBelanja">Rp 0</span>
+          </div>
+
+          <div class="cash-input-wrap">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label for="uangDiterima" class="bill-label">💵 Uang Diterima:</label>
+              <span style="font-size:0.75rem; color:var(--text-muted);">Masukkan nominal bayar</span>
+            </div>
+
+            <input type="number" class="input-money" id="uangDiterima" placeholder="Contoh: 50000" oninput="hitungKembalian()" />
+
+            <!-- Quick Presets -->
+            <div class="cash-presets">
+              <span class="preset-chip" onclick="setExactCash()">Uang Pas</span>
+              <span class="preset-chip" onclick="setCashPreset(10000)">Rp 10.000</span>
+              <span class="preset-chip" onclick="setCashPreset(20000)">Rp 20.000</span>
+              <span class="preset-chip" onclick="setCashPreset(50000)">Rp 50.000</span>
+              <span class="preset-chip" onclick="setCashPreset(100000)">Rp 100.000</span>
+            </div>
+          </div>
+
+          <!-- Kembalian Banner -->
+          <div class="change-banner" id="changeBanner">
+            <span class="change-label" id="changeLabel">✨ Kembalian:</span>
+            <span class="change-val" id="kembalian">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-row">
+          <button class="btn btn-reset" onclick="resetKalkulator()">
+            <span>🔄</span> Reset Pesanan
+          </button>
+          <button class="btn btn-back" onclick="window.location.href='index.html'">
+            <span>📊</span> Kembali ke Rekap
+          </button>
+        </div>
+      </section>
+
+    </div>
+
   </div>
 
-  <div>
-    <button class="btn" onclick="resetKalkulator()">🔄 Reset</button>
-    <button class="btn" onclick="window.location.href='index.html'">📊 Kembali ke Rekap</button>
-  </div>
-
-  <!-- Popup keypad -->
+  <!-- ================= POPUP KEYPAD ================= -->
   <div class="popup" id="popup">
     <div class="popup-content">
-      <h3 id="popupTitle">Masukkan Jumlah</h3>
-      <input type="text" id="jumlahInput" value="0" readonly />
-      <div class="keypad">
-        <button class="key" onclick="addDigit(1)">1</button>
-        <button class="key" onclick="addDigit(2)">2</button>
-        <button class="key" onclick="addDigit(3)">3</button>
-        <button class="key" onclick="addDigit(4)">4</button>
-        <button class="key" onclick="addDigit(5)">5</button>
-        <button class="key" onclick="addDigit(6)">6</button>
-        <button class="key" onclick="addDigit(7)">7</button>
-        <button class="key" onclick="addDigit(8)">8</button>
-        <button class="key" onclick="addDigit(9)">9</button>
-        <button class="key" onclick="clearInput()">⌫</button>
-        <button class="key" onclick="addDigit(0)">0</button>
-        <button class="key" onclick="okInput()">✔</button>
+      <div class="popup-header">
+        <h3 id="popupTitle">☕ Masukkan Jumlah</h3>
+        <button class="popup-close-btn" onclick="tutupPopup()">✕</button>
+      </div>
+
+      <div class="popup-body">
+        <div class="qty-preview-card">
+          <input type="text" id="jumlahInput" value="1" readonly />
+          <div class="popup-subtotal-text">
+            Subtotal: <b id="popupSubtotal">Rp 0</b>
+          </div>
+        </div>
+
+        <!-- Quick Chips -->
+        <div class="quick-chips">
+          <span class="q-chip" onclick="setDirectQty(1)">1 Cup</span>
+          <span class="q-chip" onclick="setDirectQty(2)">2 Cup</span>
+          <span class="q-chip" onclick="setDirectQty(3)">3 Cup</span>
+          <span class="q-chip" onclick="setDirectQty(5)">5 Cup</span>
+        </div>
+
+        <!-- Keypad Grid -->
+        <div class="keypad">
+          <button class="key" onclick="addDigit(1)">1</button>
+          <button class="key" onclick="addDigit(2)">2</button>
+          <button class="key" onclick="addDigit(3)">3</button>
+          <button class="key" onclick="addDigit(4)">4</button>
+          <button class="key" onclick="addDigit(5)">5</button>
+          <button class="key" onclick="addDigit(6)">6</button>
+          <button class="key" onclick="addDigit(7)">7</button>
+          <button class="key" onclick="addDigit(8)">8</button>
+          <button class="key" onclick="addDigit(9)">9</button>
+          <button class="key action-clear" onclick="clearInput()">⌫</button>
+          <button class="key" onclick="addDigit(0)">0</button>
+          <button class="key" onclick="resetDigit()">C</button>
+          <button class="key action-ok" onclick="okInput()">
+            ✓ Tambah ke Pesanan
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    const menuList = {
-      "Yei Coffee": 13000, "Cafe Latte": 8000, "Gula Aren": 10000,
-      "Popcorn Latte": 12000, "Matcha": 13000, "Choco Hazel": 13000,
-      "Americano": 8000, "Thai Tea": 13000, "Spanish Latte": 12000,
-      "Butterscotch Latte": 15000, "Espresso": 3000,
-    };
+    // Master Menu Catalog dengan Ikon, Kategori & Harga
+    const menuCatalog = [
+      { name: "Yei Coffee", price: 13000, category: "signature", icon: "☕" },
+      { name: "Cafe Latte", price: 8000, category: "coffee", icon: "🥛" },
+      { name: "Gula Aren", price: 10000, category: "coffee", icon: "🌴" },
+      { name: "Popcorn Latte", price: 12000, category: "signature", icon: "🍿" },
+      { name: "Matcha", price: 13000, category: "non-coffee", icon: "🍵" },
+      { name: "Choco Hazel", price: 13000, category: "non-coffee", icon: "🍫" },
+      { name: "Americano", price: 8000, category: "coffee", icon: "☕" },
+      { name: "Thai Tea", price: 13000, category: "non-coffee", icon: "🧋" },
+      { name: "Spanish Latte", price: 12000, category: "coffee", icon: "☕" },
+      { name: "Butterscotch Latte", price: 15000, category: "signature", icon: "🧈" },
+      { name: "Espresso", price: 3000, category: "coffee", icon: "⚡" }
+    ];
+
+    // Menu List Dictionary untuk kompatibilitas fungsi yang sudah ada
+    const menuList = {};
+    menuCatalog.forEach(m => { menuList[m.name] = m.price; });
+
     const pembelian = [];
     const menuButtons = document.getElementById("menuButtons");
     const tbody = document.querySelector("#pembelianTable tbody");
     const popup = document.getElementById("popup");
     const jumlahInput = document.getElementById("jumlahInput");
     let selectedMenu = null;
+    let activeCategory = "all";
 
-    Object.keys(menuList).forEach(menu => {
-      const btn = document.createElement("button");
-      btn.className = "menu-btn";
-      btn.textContent = menu;
-      btn.onclick = () => bukaPopup(menu);
-      menuButtons.appendChild(btn);
-    });
+    // Format Rupiah
+    function formatRp(num) {
+      return "Rp " + (Number(num) || 0).toLocaleString("id-ID");
+    }
 
+    // Render Menu Buttons
+    function renderMenuButtons() {
+      menuButtons.innerHTML = "";
+
+      const filtered = menuCatalog.filter(item => {
+        return activeCategory === "all" || item.category === activeCategory;
+      });
+
+      filtered.forEach(drink => {
+        const cartItem = pembelian.find(p => p.menu === drink.name);
+        const countInCart = cartItem ? cartItem.jumlah : 0;
+
+        const btn = document.createElement("div");
+        btn.className = "menu-btn";
+        btn.onclick = () => bukaPopup(drink.name);
+
+        btn.innerHTML = `
+          ${countInCart > 0 ? `<span class="menu-cart-count">${countInCart}</span>` : ''}
+          <div class="menu-btn-icon">${drink.icon}</div>
+          <div class="menu-btn-name">${drink.name}</div>
+          <div class="menu-btn-price">${formatRp(drink.price)}</div>
+        `;
+        menuButtons.appendChild(btn);
+      });
+    }
+
+    function filterCategory(cat, chipEl) {
+      activeCategory = cat;
+      document.querySelectorAll("#categoryFilterBar .filter-chip").forEach(c => c.classList.remove("active"));
+      if (chipEl) chipEl.classList.add("active");
+      renderMenuButtons();
+    }
+
+    // Popup Functions
     function bukaPopup(menu) {
       selectedMenu = menu;
-      document.getElementById("popupTitle").textContent = menu;
-      jumlahInput.value = "0";
+      const drinkObj = menuCatalog.find(m => m.name === menu);
+      document.getElementById("popupTitle").textContent = `${drinkObj ? drinkObj.icon : '☕'} ${menu}`;
+      jumlahInput.value = "1";
+      updatePopupSubtotal();
       popup.style.display = "flex";
+      setTimeout(() => popup.classList.add("show"), 10);
+    }
+
+    function tutupPopup() {
+      popup.classList.remove("show");
+      setTimeout(() => popup.style.display = "none", 150);
+      selectedMenu = null;
+    }
+
+    function updatePopupSubtotal() {
+      if (!selectedMenu) return;
+      const qty = parseInt(jumlahInput.value) || 0;
+      const harga = menuList[selectedMenu] || 0;
+      document.getElementById("popupSubtotal").textContent = formatRp(qty * harga);
     }
 
     function addDigit(num) {
-      if (jumlahInput.value === "0") jumlahInput.value = num.toString();
-      else jumlahInput.value += num;
+      if (jumlahInput.value === "0" || (jumlahInput.value === "1" && jumlahInput.value.length === 1)) {
+        jumlahInput.value = num.toString();
+      } else {
+        if (jumlahInput.value.length < 3) {
+          jumlahInput.value += num.toString();
+        }
+      }
+      if (jumlahInput.value === "" || jumlahInput.value === "0") jumlahInput.value = "1";
+      updatePopupSubtotal();
     }
 
     function clearInput() {
-      jumlahInput.value = jumlahInput.value.slice(0, -1) || "0";
+      if (jumlahInput.value.length > 1) {
+        jumlahInput.value = jumlahInput.value.slice(0, -1);
+      } else {
+        jumlahInput.value = "1";
+      }
+      updatePopupSubtotal();
+    }
+
+    function resetDigit() {
+      jumlahInput.value = "1";
+      updatePopupSubtotal();
+    }
+
+    function setDirectQty(q) {
+      jumlahInput.value = q.toString();
+      updatePopupSubtotal();
     }
 
     function okInput() {
       const qty = parseInt(jumlahInput.value) || 0;
-      if (qty > 0) tambahPembelian(selectedMenu, qty);
-      popup.style.display = "none";
+      if (qty > 0 && selectedMenu) {
+        tambahPembelian(selectedMenu, qty);
+      }
+      tutupPopup();
     }
 
+    // Purchase Order Handling
     function tambahPembelian(menu, qty) {
       const existing = pembelian.find(p => p.menu === menu);
-      if (existing) existing.jumlah += qty;
-      else pembelian.push({ menu, jumlah: qty });
+      if (existing) {
+        existing.jumlah += qty;
+      } else {
+        pembelian.push({ menu, jumlah: qty });
+      }
       updateTabel();
+      renderMenuButtons();
+    }
+
+    function ubahJumlah(index, delta) {
+      pembelian[index].jumlah += delta;
+      if (pembelian[index].jumlah <= 0) {
+        pembelian.splice(index, 1);
+      }
+      updateTabel();
+      renderMenuButtons();
+    }
+
+    function hapusItem(index) {
+      pembelian.splice(index, 1);
+      updateTabel();
+      renderMenuButtons();
     }
 
     function updateTabel() {
       tbody.innerHTML = "";
       let total = 0;
+      let totalItems = 0;
+
+      if (pembelian.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6">
+              <div class="empty-cart-state">
+                <div class="empty-cart-icon">🛒</div>
+                <div>Belum ada pesanan yang dipilih. Klik menu di sebelah kiri.</div>
+              </div>
+            </td>
+          </tr>
+        `;
+        document.getElementById("cartCountBadge").textContent = "0 Item";
+        document.getElementById("totalBelanja").textContent = "Rp 0";
+        hitungKembalian();
+        return;
+      }
+
       pembelian.forEach((p, i) => {
-        const harga = menuList[p.menu];
+        const harga = menuList[p.menu] || 0;
         const subtotal = harga * p.jumlah;
         total += subtotal;
+        totalItems += p.jumlah;
+
         tbody.innerHTML += `
           <tr>
-            <td>${i + 1}</td>
-            <td>${p.menu}</td>
-            <td>Rp ${harga.toLocaleString("id-ID")}</td>
-            <td>${p.jumlah}</td>
-            <td>Rp ${subtotal.toLocaleString("id-ID")}</td>
+            <td style="color:var(--text-subtle);">${i + 1}</td>
+            <td style="text-align:left; font-weight:700;">${p.menu}</td>
+            <td style="text-align:right; font-family:'Outfit',sans-serif;">${formatRp(harga)}</td>
+            <td style="text-align:center;">
+              <div class="qty-stepper">
+                <button class="step-btn" onclick="ubahJumlah(${i}, -1)">-</button>
+                <span style="min-width:18px; font-weight:800;">${p.jumlah}</span>
+                <button class="step-btn" onclick="ubahJumlah(${i}, 1)">+</button>
+              </div>
+            </td>
+            <td style="text-align:right; font-family:'Outfit',sans-serif; font-weight:700;">${formatRp(subtotal)}</td>
+            <td>
+              <button class="btn-row-delete" title="Hapus menu" onclick="hapusItem(${i})">✕</button>
+            </td>
           </tr>
         `;
       });
-      document.getElementById("totalBelanja").textContent = "Rp " + total.toLocaleString("id-ID");
+
+      document.getElementById("cartCountBadge").textContent = `${totalItems} Cup`;
+      document.getElementById("totalBelanja").textContent = formatRp(total);
       hitungKembalian();
     }
 
+    // Kembalian Calculation
     function hitungKembalian() {
       const total = parseInt(document.getElementById("totalBelanja").textContent.replace(/\D/g, "")) || 0;
       const bayar = parseInt(document.getElementById("uangDiterima").value) || 0;
-      const kembali = bayar - total;
-      document.getElementById("kembalian").textContent = "Rp " + (kembali >= 0 ? kembali.toLocaleString("id-ID") : "0");
+      const banner = document.getElementById("changeBanner");
+      const label = document.getElementById("changeLabel");
+      const kembalianEl = document.getElementById("kembalian");
+
+      if (bayar === 0 && total === 0) {
+        banner.classList.remove("deficit");
+        label.textContent = "✨ Kembalian:";
+        kembalianEl.textContent = "Rp 0";
+        return;
+      }
+
+      const selisih = bayar - total;
+
+      if (selisih >= 0) {
+        banner.classList.remove("deficit");
+        label.textContent = "✨ Kembalian:";
+        kembalianEl.textContent = formatRp(selisih);
+      } else {
+        banner.classList.add("deficit");
+        label.textContent = "⚠️ Uang Kurang:";
+        kembalianEl.textContent = formatRp(Math.abs(selisih));
+      }
+    }
+
+    // Cash Preset Shortcuts
+    function setExactCash() {
+      const total = parseInt(document.getElementById("totalBelanja").textContent.replace(/\D/g, "")) || 0;
+      document.getElementById("uangDiterima").value = total > 0 ? total : "";
+      hitungKembalian();
+    }
+
+    function setCashPreset(amount) {
+      document.getElementById("uangDiterima").value = amount;
+      hitungKembalian();
     }
 
     function resetKalkulator() {
       pembelian.length = 0;
       document.getElementById("uangDiterima").value = "";
       updateTabel();
+      renderMenuButtons();
     }
 
     popup.addEventListener("click", (e) => {
-      if (e.target === popup) popup.style.display = "none";
+      if (e.target === popup) tutupPopup();
     });
+
+    // Keyboard support for Keypad Dialog
+    window.addEventListener("keydown", (e) => {
+      if (popup.style.display === "flex") {
+        if (e.key >= "0" && e.key <= "9") {
+          addDigit(parseInt(e.key));
+        } else if (e.key === "Backspace") {
+          clearInput();
+        } else if (e.key === "Enter") {
+          okInput();
+        } else if (e.key === "Escape") {
+          tutupPopup();
+        }
+      }
+    });
+
+    // Initialize
+    renderMenuButtons();
+    updateTabel();
   </script>
 </body>
+
 </html>
