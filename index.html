@@ -4,13 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sistem Point of Sale (POS) dan Rekapitulasi Kas Harian Yei Coffee - Modern, Cepat, dan Akurat.">
+  <meta name="description"
+    content="Sistem Point of Sale (POS) dan Rekapitulasi Kas Harian Yei Coffee - Modern, Cepat, dan Akurat.">
   <title>Yei Coffee - POS & Rekap Kas Harian</title>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <style>
     :root {
@@ -76,7 +79,7 @@
     body {
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       background: var(--bg-canvas);
-      background-image: 
+      background-image:
         radial-gradient(at 0% 0%, rgba(201, 139, 98, 0.12) 0px, transparent 50%),
         radial-gradient(at 100% 100%, rgba(123, 70, 45, 0.08) 0px, transparent 50%);
       color: var(--text-main);
@@ -188,9 +191,20 @@
     }
 
     @keyframes pulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
-      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+      }
+
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+      }
     }
 
     .header-nav {
@@ -272,11 +286,25 @@
       background: transparent;
     }
 
-    .kpi-card.kpi-modal::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
-    .kpi-card.kpi-cash::before { background: linear-gradient(90deg, #10b981, #059669); }
-    .kpi-card.kpi-qris::before { background: linear-gradient(90deg, #6366f1, #4f46e5); }
-    .kpi-card.kpi-expense::before { background: linear-gradient(90deg, #f43f5e, #e11d48); }
-    .kpi-card.kpi-net::before { background: linear-gradient(90deg, #c98b62, #7b462d); }
+    .kpi-card.kpi-modal::before {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .kpi-card.kpi-cash::before {
+      background: linear-gradient(90deg, #10b981, #059669);
+    }
+
+    .kpi-card.kpi-qris::before {
+      background: linear-gradient(90deg, #6366f1, #4f46e5);
+    }
+
+    .kpi-card.kpi-expense::before {
+      background: linear-gradient(90deg, #f43f5e, #e11d48);
+    }
+
+    .kpi-card.kpi-net::before {
+      background: linear-gradient(90deg, #c98b62, #7b462d);
+    }
 
     .kpi-header {
       display: flex;
@@ -303,11 +331,30 @@
       font-size: 1rem;
     }
 
-    .kpi-modal .kpi-icon { background: var(--amber-100); color: var(--amber-500); }
-    .kpi-cash .kpi-icon { background: var(--emerald-100); color: var(--emerald-600); }
-    .kpi-qris .kpi-icon { background: var(--indigo-100); color: var(--indigo-600); }
-    .kpi-expense .kpi-icon { background: var(--rose-100); color: var(--rose-600); }
-    .kpi-net .kpi-icon { background: var(--coffee-100); color: var(--coffee-700); }
+    .kpi-modal .kpi-icon {
+      background: var(--amber-100);
+      color: var(--amber-500);
+    }
+
+    .kpi-cash .kpi-icon {
+      background: var(--emerald-100);
+      color: var(--emerald-600);
+    }
+
+    .kpi-qris .kpi-icon {
+      background: var(--indigo-100);
+      color: var(--indigo-600);
+    }
+
+    .kpi-expense .kpi-icon {
+      background: var(--rose-100);
+      color: var(--rose-600);
+    }
+
+    .kpi-net .kpi-icon {
+      background: var(--coffee-100);
+      color: var(--coffee-700);
+    }
 
     .kpi-value {
       font-family: 'Outfit', sans-serif;
@@ -334,8 +381,15 @@
       font-weight: 600;
     }
 
-    .kpi-cash .kpi-badge { background: var(--emerald-50); color: var(--emerald-600); }
-    .kpi-qris .kpi-badge { background: var(--indigo-50); color: var(--indigo-600); }
+    .kpi-cash .kpi-badge {
+      background: var(--emerald-50);
+      color: var(--emerald-600);
+    }
+
+    .kpi-qris .kpi-badge {
+      background: var(--indigo-50);
+      color: var(--indigo-600);
+    }
 
     /* ================= MAIN 2-COLUMN SECTION ================= */
     .pos-workspace {
@@ -1111,13 +1165,27 @@
     }
 
     @keyframes toastIn {
-      from { transform: translateX(100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
     }
 
     @keyframes toastOut {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(100%); opacity: 0; }
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
     }
 
     /* Modal Confirmation Reset */
@@ -1155,12 +1223,22 @@
         background: #fff;
         padding: 0;
       }
-      .app-header, .menu-filter-bar, .search-input-wrapper, .menu-grid, .cashflow-stack, .actions-bottom-bar, .modal-overlay, .toast-container {
+
+      .app-header,
+      .menu-filter-bar,
+      .search-input-wrapper,
+      .menu-grid,
+      .cashflow-stack,
+      .actions-bottom-bar,
+      .modal-overlay,
+      .toast-container {
         display: none !important;
       }
+
       .pos-workspace {
         grid-template-columns: 1fr;
       }
+
       .glass-card {
         border: none;
         box-shadow: none;
@@ -1173,39 +1251,50 @@
       body {
         padding: 10px;
       }
+
       .app-header {
         padding: 14px;
       }
+
       .brand-info h1 {
         font-size: 1.25rem;
       }
+
       .header-center-info {
         width: 100%;
         justify-content: center;
       }
+
       .header-nav {
         width: 100%;
         justify-content: space-between;
       }
+
       .nav-btn {
         flex: 1 1 45%;
         justify-content: center;
       }
+
       .kpi-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
       .kpi-grid .kpi-net {
         grid-column: span 2;
       }
+
       .kpi-value {
         font-size: 1.25rem;
       }
+
       .menu-grid {
         grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
       }
+
       .menu-item-icon {
         font-size: 1.4rem;
       }
+
       .menu-item-name {
         font-size: 0.75rem;
       }
@@ -1252,7 +1341,7 @@
           <span>💳</span> Member
         </a>
         <a href="loyaltyadmin.html" class="nav-btn primary-nav">
-          <span>⚙️</span> Admin
+          <span>⚙️</span> Admin Member
         </a>
       </nav>
     </header>
@@ -1267,7 +1356,7 @@
         </div>
         <div class="kpi-value" id="kpiModalAwal">Rp 0</div>
         <div class="kpi-footer">
-          <span>Kas laci awal hari</span>
+          <span>Kas Modal awal hari</span>
         </div>
       </div>
 
@@ -1348,7 +1437,8 @@
           <!-- Search Bar -->
           <div class="search-input-wrapper">
             <span class="search-icon">🔍</span>
-            <input type="text" id="menuSearchInput" placeholder="Cari nama menu (misal: Latte, Aren, Matcha)..." oninput="searchMenu(this.value)">
+            <input type="text" id="menuSearchInput" placeholder="Cari nama menu (misal: Latte, Aren, Matcha)..."
+              oninput="searchMenu(this.value)">
           </div>
 
           <!-- Menu Grid -->
@@ -1409,13 +1499,13 @@
             </div>
           </div>
           <div class="input-group">
-            <input type="number" id="inputModalAwal" class="styled-input" placeholder="Nominal uang modal laci (Rp)">
+            <input type="number" id="inputModalAwal" class="styled-input" placeholder="Nominal uang modal (Rp)">
             <button class="btn-action" onclick="simpanModal()">
               <span>💾</span> Simpan
             </button>
           </div>
           <p style="font-size:0.78rem; color:var(--text-muted); margin-top:8px;">
-            Masukkan uang kembalian di laci kasir saat pembukaan shift.
+            Masukkan uang kembalian di gerobak saat pembukaan shift.
           </p>
         </section>
 
@@ -1428,7 +1518,8 @@
           </div>
 
           <div style="display:flex; flex-direction:column; gap:10px;">
-            <input type="text" id="inputNamaPengeluaran" class="styled-input" placeholder="Nama pengeluaran (misal: Es Batu, Susu, Galon)">
+            <input type="text" id="inputNamaPengeluaran" class="styled-input"
+              placeholder="Nama pengeluaran (misal: Es Batu, Susu, Galon)">
             <div class="input-group">
               <input type="number" id="inputJumlahPengeluaran" class="styled-input" placeholder="Jumlah biaya (Rp)">
               <button class="btn-action btn-danger" onclick="tambahPengeluaran()">
@@ -1460,7 +1551,8 @@
             </div>
           </div>
 
-          <div style="background:var(--coffee-50); border-radius:var(--radius-md); padding:14px; border:1px solid var(--border-color); font-size:0.85rem; line-height:1.8;">
+          <div
+            style="background:var(--coffee-50); border-radius:var(--radius-md); padding:14px; border:1px solid var(--border-color); font-size:0.85rem; line-height:1.8;">
             <div style="display:flex; justify-content:space-between;">
               <span>Total Omset Kotor (Gross):</span>
               <strong id="sumGrossSales">Rp 0</strong>
@@ -1478,11 +1570,13 @@
               <span id="sumExpenses">- Rp 0</span>
             </div>
             <hr style="border:none; border-top:1px dashed var(--border-color); margin:8px 0;">
-            <div style="display:flex; justify-content:space-between; font-weight:800; font-size:0.95rem; color:var(--coffee-900);">
-              <span>Uang Fisik Kasir (Laci):</span>
+            <div
+              style="display:flex; justify-content:space-between; font-weight:800; font-size:0.95rem; color:var(--coffee-900);">
+              <span>Uang Fisik yang dibawa pulang:</span>
               <span id="sumCashInDrawer" style="color:var(--emerald-600);">Rp 0</span>
             </div>
-            <div style="font-size:0.75rem; color:var(--text-muted); text-align:right;">(Modal Awal + Cash - Pengeluaran)</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); text-align:right;">(Modal Awal + Cash - Pengeluaran)
+            </div>
           </div>
 
           <div class="actions-bottom-bar">
@@ -2071,13 +2165,13 @@
       let msg = `☕ *REKAP KASIR YEI COFFEE* ☕\n`;
       msg += `📅 _${dateStr} WIB_\n`;
       msg += `------------------------------------\n`;
-      msg += `💰 *Modal Awal Laci:* ${formatRp(uangModal)}\n`;
+      msg += `💰 *Modal Awal :* ${formatRp(uangModal)}\n`;
       msg += `💵 *Penjualan Cash:* ${formatRp(totalCash)} (${qtyCash} cup)\n`;
       msg += `📱 *Penjualan QRIS:* ${formatRp(totalQris)} (${qtyQris} cup)\n`;
       msg += `🌟 *Total Omset:* ${formatRp(grossSales)} (${qtyCash + qtyQris} cup)\n`;
       msg += `💸 *Pengeluaran:* ${formatRp(totalExpense)}\n`;
       msg += `------------------------------------\n`;
-      msg += `💵 *Uang Fisik Kasir (Laci):* ${formatRp(cashInDrawer)}\n`;
+      msg += `💵 *Uang Fisik Pendapatan:* ${formatRp(cashInDrawer)}\n`;
       msg += `✨ *Total Bersih Shift:* ${formatRp(netTotal)}\n`;
 
       if (pengeluaran.length > 0) {
