@@ -843,7 +843,6 @@ const menuHarga = {
 "Matcha":13000,
 "Choco Hazel":13000,
 "Americano":8000,
-"Thai Tea":13000,
 "Spanish Latte":12000,
 "Butterscotch Latte":15000
 };
@@ -1137,6 +1136,12 @@ localStorage.getItem("laporanYei") || "{}"
 );
 
 if(!data.table) return;
+
+// Jika data lama menyimpan 10 baris (termasuk Thai Tea di baris ke-8 / index 7), bersihkan
+if (data.table.length === 10) {
+  data.table.splice(7, 1);
+  localStorage.setItem("laporanYei", JSON.stringify(data));
+}
 
 document.getElementById("tanggal").value =
 data.tanggal || "";

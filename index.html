@@ -1689,7 +1689,6 @@
       { name: "Matcha", price: 13000, category: "non-coffee", icon: "🍵" },
       { name: "Choco Hazel", price: 13000, category: "non-coffee", icon: "🍫" },
       { name: "Americano", price: 8000, category: "coffee", icon: "☕" },
-      { name: "Thai Tea", price: 13000, category: "non-coffee", icon: "🧋" },
       { name: "Spanish Latte", price: 12000, category: "coffee", icon: "☕" },
       { name: "Butterscotch Latte", price: 15000, category: "signature", icon: "🧈" },
       { name: "Espresso", price: 3000, category: "coffee", icon: "⚡" }
@@ -1704,8 +1703,8 @@
     let pengeluaran = JSON.parse(localStorage.getItem("pengeluaran") || "[]");
     let uangModal = parseInt(localStorage.getItem("uangModal") || "0");
 
-    // Bersihkan Blush Berry dan Pink Potion jika sebelumnya tersimpan di local data
-    dataRekap = dataRekap.filter(x => x.menu !== "Blush Berry" && x.menu !== "Pink Potion");
+    // Bersihkan Blush Berry, Pink Potion, dan Thai Tea jika sebelumnya tersimpan di local data
+    dataRekap = dataRekap.filter(x => x.menu !== "Blush Berry" && x.menu !== "Pink Potion" && x.menu !== "Thai Tea");
     localStorage.setItem("dataRekap", JSON.stringify(dataRekap));
 
     // State Variables
